@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class Player : MonoBehaviour
     private int currentMana = 50;
     private float baseAtk = 50.0f;
     private float baseDef = 50.0f;
+
+    public TextMeshProUGUI HPText;
 
     public void dealDamage(int damageDealt)
     {
@@ -55,12 +58,12 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        HPText.color = Color.red;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        HPText.text = currentHP.ToString() + " / " + maxHP.ToString();
     }
 }
