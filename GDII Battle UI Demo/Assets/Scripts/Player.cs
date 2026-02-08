@@ -1,18 +1,45 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
+
+public class Spell
+{
+    private string SpellName;
+    private int BasePower;
+
+    public Spell(string spellName, int basePower)
+    {
+        SpellName = spellName;
+        BasePower = basePower;
+    }
+
+    public string getSpellName()
+    {
+        return SpellName;
+    }
+}
+
+public class Item
+{
+    public string ItemName;
+}
 
 public class Player : MonoBehaviour
 {
-    private int maxHP = 50;
+    [SerializeField] private int maxHP = 50;
     private int currentHP = 50;
-    private int maxMana = 50;
+    [SerializeField] private int maxMana = 50;
     private int currentMana = 50;
     private float baseAtk = 50.0f;
     private float baseDef = 50.0f;
 
-    public TextMeshProUGUI HPText;
+    [SerializeField] private TextMeshProUGUI HPText;
+    [SerializeField] private TextMeshProUGUI manaText;
 
-    public void dealDamage(int damageDealt)
+    private List<Spell> playerSpells = new List<Spell>();
+    public List<Enemy> enemiesInScene = new List<Enemy>();
+
+    public void takeDamage(int damageDealt)
     {
         currentHP -= damageDealt;
         if (currentHP <= 0)
@@ -58,12 +85,16 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        HPText.color = Color.red;
+        currentHP = maxHP;
+        currentMana = maxMana;
+
+        playerSpells.Add(new Spell("fireball", 80));
     }
 
     // Update is called once per frame
     void Update()
     {
-        HPText.text = currentHP.ToString() + " / " + maxHP.ToString();
+        HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
+        manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
     }
 }
