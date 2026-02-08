@@ -6,11 +6,13 @@ public class Spell
 {
     private string SpellName;
     private int BasePower;
+    private string SpellType;
 
-    public Spell(string spellName, int basePower)
+    public Spell(string spellName, int basePower, string spellType)
     {
         SpellName = spellName;
         BasePower = basePower;
+        SpellType = spellType.ToLower();
     }
 
     public string getSpellName()
@@ -27,7 +29,7 @@ public class Item
 public class Player : MonoBehaviour
 {
     [SerializeField] private int maxHP = 50;
-    private int currentHP = 50;
+    private int currentHP = 120;
     [SerializeField] private int maxMana = 50;
     private int currentMana = 50;
     private float baseAtk = 50.0f;
@@ -36,9 +38,17 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI HPText;
     [SerializeField] private TextMeshProUGUI manaText;
 
-    private List<Spell> playerSpells = new List<Spell>();
+    public List<Spell> playerSpells = new List<Spell>();
     public List<Enemy> enemiesInScene = new List<Enemy>();
 
+    public int getCurrentHP()
+    {
+        return currentHP;
+    }
+    public float getDefense()
+    {
+        return baseDef;
+    }
     public void takeDamage(int damageDealt)
     {
         currentHP -= damageDealt;
@@ -85,15 +95,17 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentHP = maxHP;
-        currentMana = maxMana;
-
-        playerSpells.Add(new Spell("fireball", 80));
+        playerSpells.Add(new Spell("Fireball", 80, "fire"));
+        playerSpells.Add(new Spell("Water Orb", 80, "water"));
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (currentHP > maxHP)
+        {
+            currentHP = maxHP;
+        }
         HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
         manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
     }
