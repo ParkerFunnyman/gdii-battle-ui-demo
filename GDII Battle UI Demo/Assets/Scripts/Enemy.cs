@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
     public void MagicAttack(int baseDamage)
     {
         //modified version of pokemon damage calc
-        double damage = (((0.4 * baseDamage * (baseAtk / player.getDefense()))/50) + 2) * (Random.Range(85, 101) / 100);
+        double damage = (((16 * baseDamage * (baseAtk / player.getDefense()))/50) + 2) * (Random.Range(85, 101) / 100);
         player.takeDamage((int)damage);
         return;
     }
@@ -83,5 +83,6 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //actions[0].doAction(this);
     }
 }
