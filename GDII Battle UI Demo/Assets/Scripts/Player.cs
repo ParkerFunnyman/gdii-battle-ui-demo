@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
     private float baseAtk = 50.0f;
     private float baseDef = 50.0f;
 
+    [SerializeField] private Animator anim;
     [SerializeField] private TextMeshProUGUI HPText;
     [SerializeField] private TextMeshProUGUI manaText;
 
@@ -90,11 +91,15 @@ public class Player : MonoBehaviour
 
     public void die()
     {
+        anim.StopPlayback();
+        anim.SetBool("dead", true);
         return; //DO LATER
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        anim.SetBool("dead", false);
+        anim.SetBool("casting", false);
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Water Orb", 80, "water"));
     }
