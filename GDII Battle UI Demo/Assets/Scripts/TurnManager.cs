@@ -5,10 +5,15 @@ using NUnit.Framework;
 
 public class TurnManager : MonoBehaviour
 {
+    public enum TurnState
+    {
+        BattleStart,
+        PlayerTurn,
+        EnemyTurn,
+    }
     public bool IsPlayerTurn = true;
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void EnemyTurn()
     {
         for (int i = 0; i < enemies.Count; i++)
@@ -23,6 +28,8 @@ public class TurnManager : MonoBehaviour
         //DO LATER
         IsPlayerTurn = false;
     }
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         

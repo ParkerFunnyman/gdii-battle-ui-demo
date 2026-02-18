@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 
     public List<Spell> playerSpells = new List<Spell>();
     public List<Enemy> enemiesInScene = new List<Enemy>();
+    private bool testBool = false;
 
     public int getCurrentHP()
     {
@@ -100,8 +101,10 @@ public class Player : MonoBehaviour
     {
         anim.SetBool("dead", false);
         anim.SetBool("casting", false);
+        anim.SetBool("melee", false);
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Water Orb", 80, "water"));
+        playerSpells.Add(new Spell("Minor Restoration" , 20, "heal"));
     }
 
     // Update is called once per frame
