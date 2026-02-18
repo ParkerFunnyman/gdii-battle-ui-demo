@@ -64,6 +64,11 @@ public class Enemy : MonoBehaviour
         {
             currentHP = maxHP;
         }
+        
+        if (currentHP == maxHP)
+        {
+            MagicAttack(10);
+        }
     }
     public void MagicAttack(int baseDamage)
     {
