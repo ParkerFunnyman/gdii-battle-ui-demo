@@ -23,7 +23,7 @@ public class Spell
 
 public class Item
 {
-    public string ItemName;
+    private string ItemName;
 }
 
 public class Player : MonoBehaviour
@@ -94,7 +94,8 @@ public class Player : MonoBehaviour
     {
         anim.StopPlayback();
         anim.SetBool("dead", true);
-        return; //DO LATER
+        //insert function to end battle, return to last save, delete player's system32, etc.
+        return;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -102,9 +103,10 @@ public class Player : MonoBehaviour
         anim.SetBool("dead", false);
         anim.SetBool("casting", false);
         anim.SetBool("melee", false);
+
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Water Orb", 80, "water"));
-        playerSpells.Add(new Spell("Minor Restoration" , 20, "heal"));
+        playerSpells.Add(new Spell("Minor Restoration", 20, "heal"));
     }
 
     // Update is called once per frame

@@ -55,6 +55,11 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.PlayerTurn:
+                    currentState = TurnState.BattleWon;
+                    if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
+                    {
+                        currentState = TurnState.BattleWon;
+                    }
                     break;
 
                 case TurnState.EnemyTurn:

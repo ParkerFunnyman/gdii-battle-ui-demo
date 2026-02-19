@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
+
 
 public class EnemyAction
 {
@@ -36,6 +38,8 @@ public class EnemyAction
         }
     }
 }
+
+
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private int maxHP = 50;
@@ -59,7 +63,7 @@ public class Enemy : MonoBehaviour
 
     public void restoreHealth(int healthGained)
     {
-        currentHP += healthGained;
+        anim.Play("Backflip");
         if (currentHP > maxHP)
         {
             currentHP = maxHP;
@@ -69,20 +73,33 @@ public class Enemy : MonoBehaviour
         {
             MagicAttack(10);
         }
+        else
+        {
+            currentHP += healthGained;
+        }
     }
     public void MagicAttack(int baseDamage)
     {
         //modified version of pokemon damage calc
-        double damage = (((16 * baseDamage * (baseAtk / player.getDefense()))/50) + 2) * (Random.Range(85, 101) / 100);
+        anim.Play("Casting");
+        double damage = (((16 * baseDamage * (baseAtk / player.getDefense()))/50) + 2) * (UnityEngine.Random.Range(85, 101) / 100);
         player.takeDamage((int)damage);
         return;
     }
+    public void setAnimBool(string name, bool state)
+    {
+        anim.SetBool(name, state);
+    }
+
     void Start()
     {
+        anim.SetBool("attack", false);
+        anim.SetBool("healing", false);
         player.enemiesInScene.Add(this);
         attackType = attackType.ToLower();
         actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
         actions.Add(new EnemyAction("Lesser Restoration", 30, "heal"));
+        actions[1].doAction(this);
     }
 
     // Update is called once per frame
