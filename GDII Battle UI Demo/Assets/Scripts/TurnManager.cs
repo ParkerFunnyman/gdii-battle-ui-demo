@@ -51,11 +51,14 @@ public class TurnManager : MonoBehaviour
             switch (currentState)
             {
                 case TurnState.BattleStart:
+                    //Spawn text box
+                    yield return new WaitForSeconds(1f);
                     currentState = TurnState.PlayerTurn;
                     break;
 
                 case TurnState.PlayerTurn:
                     currentState = TurnState.BattleWon;
+                    //UI control
                     if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
                     {
                         currentState = TurnState.BattleWon;
@@ -74,6 +77,7 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.BattleLost:
+                    player.die();
                     break;
 
                 default:

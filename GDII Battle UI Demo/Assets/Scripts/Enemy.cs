@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Rendering;
 
 
 public class EnemyAction
@@ -43,7 +44,7 @@ public class EnemyAction
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private int maxHP = 50;
-    private int currentHP = 50;
+    private int currentHP = 1;
     private float baseAtk = 50.0f;
     private float baseDef = 50.0f;
     [SerializeField] private string attackType = "";
@@ -62,20 +63,19 @@ public class Enemy : MonoBehaviour
     }
 
     public void restoreHealth(int healthGained)
-    {
-        anim.Play("Backflip");
-        if (currentHP > maxHP)
-        {
-            currentHP = maxHP;
-        }
-        
+    {   
         if (currentHP == maxHP)
         {
             MagicAttack(10);
         }
         else
         {
+            anim.Play("Backflip");
             currentHP += healthGained;
+            if (currentHP > maxHP)
+            {
+                currentHP = maxHP;
+            }
         }
     }
     public void MagicAttack(int baseDamage)
@@ -93,18 +93,17 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        currentHP = maxHP;
         anim.SetBool("attack", false);
         anim.SetBool("healing", false);
         player.enemiesInScene.Add(this);
         attackType = attackType.ToLower();
         actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
         actions.Add(new EnemyAction("Lesser Restoration", 30, "heal"));
-        actions[1].doAction(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //actions[0].doAction(this);
     }
 }
