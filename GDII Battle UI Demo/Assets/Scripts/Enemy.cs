@@ -43,6 +43,7 @@ public class EnemyAction
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private String enemyName;
     [SerializeField] private int maxHP = 50;
     private int currentHP = 1;
     private float baseAtk = 50.0f;
@@ -62,6 +63,10 @@ public class Enemy : MonoBehaviour
         return baseDef;
     }
 
+    public String getName()
+    {
+        return enemyName;
+    }
     public void restoreHealth(int healthGained)
     {   
         if (currentHP == maxHP)
@@ -96,7 +101,6 @@ public class Enemy : MonoBehaviour
         currentHP = maxHP;
         anim.SetBool("attack", false);
         anim.SetBool("healing", false);
-        player.enemiesInScene.Add(this);
         attackType = attackType.ToLower();
         actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
         actions.Add(new EnemyAction("Lesser Restoration", 30, "heal"));

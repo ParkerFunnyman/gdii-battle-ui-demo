@@ -19,6 +19,17 @@ public class Spell
     {
         return SpellName;
     }
+
+    public void castSpell(Player p, Enemy e)
+    {
+        if (SpellType == "heal"){
+            p.restoreHealth(BasePower);
+        }
+        else
+        {
+            e.restoreHealth(-BasePower);
+        }
+    }
 }
 
 public class Item
@@ -40,7 +51,7 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
 
     public List<Spell> playerSpells = new List<Spell>();
-    public List<Enemy> enemiesInScene = new List<Enemy>();
+
     private bool testBool = false;
 
     public int getCurrentHP()
@@ -106,7 +117,7 @@ public class Player : MonoBehaviour
 
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Water Orb", 80, "water"));
-        playerSpells.Add(new Spell("Minor Restoration", 20, "heal"));
+        playerSpells.Add(new Spell("Minor Restoration", 40, "heal"));
     }
 
     // Update is called once per frame
