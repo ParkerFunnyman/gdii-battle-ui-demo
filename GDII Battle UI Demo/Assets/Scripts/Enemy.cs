@@ -27,6 +27,11 @@ public class EnemyAction
         return BasePower;
     }
 
+    public String getName()
+    {
+        return ActionName;
+    }
+
     public void doAction(Enemy e)
     {
         if (Type == "heal")
@@ -87,7 +92,7 @@ public class Enemy : MonoBehaviour
     {
         //modified version of pokemon damage calc
         anim.Play("Casting");
-        double damage = (((16 * baseDamage * (baseAtk / player.getDefense()))/50) + 2) * (UnityEngine.Random.Range(85, 101) / 100);
+        double damage = (16 * baseDamage * (baseAtk / player.getDefense())/50) + 2;
         player.takeDamage((int)damage);
         return;
     }
@@ -98,7 +103,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        currentHP = maxHP;
+        currentHP = maxHP - 1;
         anim.SetBool("attack", false);
         anim.SetBool("healing", false);
         attackType = attackType.ToLower();

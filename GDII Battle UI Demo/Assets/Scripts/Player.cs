@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 public class Spell
 {
@@ -27,7 +28,16 @@ public class Spell
         }
         else
         {
-            e.restoreHealth(-BasePower);
+            if (SpellType == "melee")
+            {
+                p.playAnim("Slashing");
+            }
+            else
+            {
+                p.playAnim("Casting");
+            }
+            double damage = ((16 * BasePower * ( p.getAttack()/ e.getDefense())/50) + 2) * (UnityEngine.Random.Range(85, 101) / 100);
+            e.restoreHealth(-(int)damage);
         }
     }
 }
@@ -52,8 +62,6 @@ public class Player : MonoBehaviour
 
     public List<Spell> playerSpells = new List<Spell>();
 
-    private bool testBool = false;
-
     public int getCurrentHP()
     {
         return currentHP;
@@ -61,6 +69,10 @@ public class Player : MonoBehaviour
     public float getDefense()
     {
         return baseDef;
+    }
+    public float getAttack()
+    {
+        return baseAtk;
     }
     public void takeDamage(int damageDealt)
     {
@@ -101,20 +113,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void playAnim(String animToDo)
+    {
+        anim.Play(animToDo);
+        return;
+    }
+
     public void die()
     {
-        anim.StopPlayback();
-        anim.SetBool("dead", true);
+        anim.Play("Dead");
         //insert function to end battle, return to last save, delete player's system32, etc.
         return;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        anim.SetBool("dead", false);
-        anim.SetBool("casting", false);
-        anim.SetBool("melee", false);
-
+        playerSpells.Add(new Spell("Staff Attack", 40, "melee"));
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Water Orb", 80, "water"));
         playerSpells.Add(new Spell("Minor Restoration", 40, "heal"));
@@ -126,6 +140,10 @@ public class Player : MonoBehaviour
         if (currentHP > maxHP)
         {
             currentHP = maxHP;
+        }
+        else if (currentHP < 0)
+        {
+            currentHP = 0;
         }
         HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
         manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
