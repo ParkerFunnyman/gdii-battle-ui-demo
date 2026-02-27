@@ -23,7 +23,7 @@ public class Spell
 
     public void castSpell(Player p, Enemy e)
     {
-        if (SpellType == "heal"){
+        if (SpellType == "light"){
             p.restoreHealth(BasePower);
         }
         else
@@ -45,11 +45,15 @@ public class Spell
 public class Item
 {
     private string ItemName;
+    public Item(string name)
+    {
+        ItemName = name;
+    }
 }
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private int maxHP = 50;
+    [SerializeField] private int maxHP = 120;
     private int currentHP = 120;
     [SerializeField] private int maxMana = 50;
     private int currentMana = 50;
@@ -61,6 +65,7 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
 
     public List<Spell> playerSpells = new List<Spell>();
+    public List<Item> playerItems = new List<Item>();
 
     public int getCurrentHP()
     {
@@ -77,10 +82,6 @@ public class Player : MonoBehaviour
     public void takeDamage(int damageDealt)
     {
         currentHP -= damageDealt;
-        if (currentHP <= 0)
-        {
-            die();
-        }
     }
 
     public void restoreHealth(int healthGained)
@@ -113,7 +114,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playAnim(String animToDo)
+    public void playAnim(string animToDo)
     {
         anim.Play(animToDo);
         return;
@@ -130,13 +131,14 @@ public class Player : MonoBehaviour
     {
         playerSpells.Add(new Spell("Staff Attack", 40, "melee"));
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
-        playerSpells.Add(new Spell("Water Orb", 80, "water"));
-        playerSpells.Add(new Spell("Minor Restoration", 40, "heal"));
+        playerSpells.Add(new Spell("Wind Blast", 80, "wind"));
+        playerSpells.Add(new Spell("Minor Restoration", 40, "light"));
     }
 
     // Update is called once per frame
     void Update()
     {
+        //Keeps HP values in reasonable range
         if (currentHP > maxHP)
         {
             currentHP = maxHP;
@@ -145,6 +147,18 @@ public class Player : MonoBehaviour
         {
             currentHP = 0;
         }
+
+        //Keeps Mana values in reasonable range
+        if (currentMana > maxMana)
+        {
+            currentMana = maxMana;
+        }
+        else if (currentMana < 0)
+        {
+            currentMana = 0;
+        }
+
+        //Updates UI text
         HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
         manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
     }

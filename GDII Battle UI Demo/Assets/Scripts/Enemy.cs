@@ -27,16 +27,20 @@ public class EnemyAction
         return BasePower;
     }
 
-    public String getName()
+    public string getName()
     {
         return ActionName;
     }
 
     public void doAction(Enemy e)
     {
-        if (Type == "heal")
+        if (Type == "light")
         {
             e.restoreHealth(BasePower);
+        }
+        else if (Type == e.getName())
+        {
+            e.MagicAttack((int)(BasePower * 1.5));
         }
         else
         {
@@ -48,7 +52,7 @@ public class EnemyAction
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private String enemyName;
+    [SerializeField] private string enemyName;
     [SerializeField] private int maxHP = 50;
     private int currentHP = 1;
     private float baseAtk = 50.0f;
@@ -63,12 +67,21 @@ public class Enemy : MonoBehaviour
     {
         return currentHP;
     }
+
+    public int getMaxHP()
+    {
+        return maxHP;
+    }
+
     public float getDefense()
     {
         return baseDef;
     }
-
-    public String getName()
+    public string getType()
+    {
+        return attackType;
+    }
+    public string getName()
     {
         return enemyName;
     }
@@ -108,7 +121,7 @@ public class Enemy : MonoBehaviour
         anim.SetBool("healing", false);
         attackType = attackType.ToLower();
         actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
-        actions.Add(new EnemyAction("Lesser Restoration", 30, "heal"));
+        actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
     }
 
     // Update is called once per frame
