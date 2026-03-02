@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 8b65d2eaa4284aa39a96c24a9f70d75e
+timeCreated: 1594717546
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Dialogs/DialogChoiceLayout.cs
+  uploadId: 843594

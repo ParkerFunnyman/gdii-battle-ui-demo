@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cf5531a668e0b894497fcbdc770d9a72
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Utils/IValidable.cs
+  uploadId: 843594

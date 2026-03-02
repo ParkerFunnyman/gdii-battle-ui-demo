@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: e46b5a69824740068a0408b6bb179a43
+timeCreated: 1584705523
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/UserScripts/StringSetObserver.cs
+  uploadId: 843594

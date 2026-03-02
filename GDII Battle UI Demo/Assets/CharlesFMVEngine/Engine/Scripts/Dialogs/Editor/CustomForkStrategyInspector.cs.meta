@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: f1db11c512474ea4be0900626dfcd7e0
+timeCreated: 1580727514
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Dialogs/Editor/CustomForkStrategyInspector.cs
+  uploadId: 843594

@@ -75,6 +75,7 @@ public class Player : MonoBehaviour
     {
         return baseDef;
     }
+
     public float getAttack()
     {
         return baseAtk;

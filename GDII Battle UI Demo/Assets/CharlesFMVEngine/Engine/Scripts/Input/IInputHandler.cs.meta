@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e722f7dcf6ca75648b7270780b19f6b4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Input/IInputHandler.cs
+  uploadId: 843594

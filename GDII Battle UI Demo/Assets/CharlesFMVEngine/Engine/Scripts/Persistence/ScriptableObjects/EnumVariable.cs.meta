@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: cbbf4a9de5ea4d508a9a6d73cab1ab6f
+timeCreated: 1578513203
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Persistence/ScriptableObjects/EnumVariable.cs
+  uploadId: 843594

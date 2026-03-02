@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f1bb7b5fc891c5a4daf6ccb679cc0621
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/UserScripts/SetText.cs
+  uploadId: 843594

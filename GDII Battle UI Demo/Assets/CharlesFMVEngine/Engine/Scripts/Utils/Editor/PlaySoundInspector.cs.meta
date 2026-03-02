@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 9d267aa4d789413eb182603b29114fcd
+timeCreated: 1554142710
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Utils/Editor/PlaySoundInspector.cs
+  uploadId: 843594

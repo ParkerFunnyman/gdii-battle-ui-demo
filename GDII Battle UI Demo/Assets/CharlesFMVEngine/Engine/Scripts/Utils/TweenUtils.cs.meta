@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: d30cb39034c240c5a21f222049736ccf
+timeCreated: 1599470632
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Utils/TweenUtils.cs
+  uploadId: 843594

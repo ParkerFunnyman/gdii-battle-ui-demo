@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c2bfe794618a9be4cbb3077f43823f6a
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/PauseMenu/PauseMenuDefault.cs
+  uploadId: 843594

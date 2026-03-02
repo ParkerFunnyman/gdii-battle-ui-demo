@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c35a3714f6a89fe4eb52fdfc0e8cfeaf
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {fileID: 2800000, guid: 5b9fc2e71a73362408d49767be6c018e, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/GameManager.cs
+  uploadId: 843594

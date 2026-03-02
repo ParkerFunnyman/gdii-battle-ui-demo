@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 7a04602b16b349618f6cf718b4b58d62
+timeCreated: 1581191962
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Scene/Editor/TimerInspector.cs
+  uploadId: 843594

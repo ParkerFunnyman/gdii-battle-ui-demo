@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: df97a85bc98dc8a4d9ac548241bd4702
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/ImportProcessor/Editor/SubtitleImporter.cs
+  uploadId: 843594

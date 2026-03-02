@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 351da705e1e44236b14938415829c9be
+timeCreated: 1594712970
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Utils/Editor/CharlesEngineWindow.cs
+  uploadId: 843594

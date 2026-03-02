@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 0936dbcc86cf42feb520e1c56a37e034
+timeCreated: 1591872518
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Dialogs/ForkExtensions/ForkNodeWithSafety.cs
+  uploadId: 843594

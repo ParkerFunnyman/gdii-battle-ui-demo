@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 646ace68772b0b04087316fcb5db6a59
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {fileID: 2800000, guid: ec25b2ce503f6ed49b551f300a0fe468, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Scene/CEGameObject.cs
+  uploadId: 843594

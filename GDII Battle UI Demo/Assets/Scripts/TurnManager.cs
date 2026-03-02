@@ -23,6 +23,7 @@ public class TurnManager : MonoBehaviour
     private bool battleOver = false;
 
     [SerializeField] private GameObject textbox;
+    [SerializeField] private Transform canvas;
     [SerializeField] private TextMeshProUGUI flavortext;
     public GameObject button;
     public Player player;
@@ -90,7 +91,13 @@ public class TurnManager : MonoBehaviour
                     //UI control
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
-                        //spawn UI button
+                        Debug.Log(i);
+                        Spell s = player.playerSpells[i];
+                        GameObject newButton = Instantiate(textbox);
+                        newButton.transform.SetParent(canvas, false);
+                        RectTransform rt = canvas.GetComponent<RectTransform>();
+                        //
+                        //newButton.GetComponentInChildren<Text>().text = s.getSpellName();
                     }
                     yield return new WaitForSeconds(1.5f); //for testing
                     currentState = TurnState.EnemyTurn;

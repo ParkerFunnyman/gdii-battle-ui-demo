@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: 1e73ea1d05054942aaf2aab73f5fe359
+timeCreated: 1533241013
+AssetOrigin:
+  serializedVersion: 1
+  productId: 176200
+  packageName: Charles Engine FMV
+  packageVersion: 1.1.2
+  assetPath: Assets/CharlesFMVEngine/Engine/Scripts/Sound/SoundPlayer.cs
+  uploadId: 843594
