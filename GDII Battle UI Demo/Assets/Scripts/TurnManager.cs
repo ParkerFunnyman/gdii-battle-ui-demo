@@ -21,7 +21,6 @@ public class TurnManager : MonoBehaviour
 
     public static TurnState currentState;
     private bool battleOver = false;
-
     [SerializeField] private GameObject textbox;
     [SerializeField] private Transform canvas;
     [SerializeField] private TextMeshProUGUI flavortext;
@@ -99,7 +98,11 @@ public class TurnManager : MonoBehaviour
                         //
                         //newButton.GetComponentInChildren<Text>().text = s.getSpellName();
                     }
+                    player.playerSpells[0].castSpell(player, enemies[0]);
+                    flavortext.text = "Rowan hit " + enemies[0].getName() + " with her staff!";
+                    textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
+                    textbox.SetActive(false);
                     currentState = TurnState.EnemyTurn;
                     break;
 
@@ -110,7 +113,7 @@ public class TurnManager : MonoBehaviour
                         EnemyAction a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
                         if ((a.getType() == "light") && (e.getCurrentHP() >= e.getMaxHP()))
                         {
-                            string t = e.getName() + " tried to heal, but its health was alrady full, so it attacked you instead!";
+                            string t = e.getName() + " tried to heal, but its health was already full, so it attacked you instead!";
                             flavortext.text = t;
                         }
                         else

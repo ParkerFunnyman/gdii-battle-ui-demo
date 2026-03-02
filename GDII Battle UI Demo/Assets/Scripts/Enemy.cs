@@ -38,7 +38,7 @@ public class EnemyAction
         {
             e.restoreHealth(BasePower);
         }
-        else if (Type == e.getName())
+        else if (Type == e.getType())
         {
             e.MagicAttack((int)(BasePower * 1.5));
         }
