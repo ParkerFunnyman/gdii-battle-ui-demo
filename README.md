@@ -5,4 +5,5 @@ This is a WIP Demo of the battle system for [TITLE PENDING], the project for Int
 - Unity Version: 6000.3.5f1
 
 ## Credits
-- Animations and Placeholder Models: [Mixamo](https://www.mixamo.com/#/)
+- Animations and Placeholder Models: [Mixamo](https://www.mixamo.com/#/) from [Adobe](https://www.adobe.com/)
+- Dialogue Manager: [Charles Engine](https://www.charlesgames.net/charles-engine) from [Charles Games](https://www.charlesgames.net/)
