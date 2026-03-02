@@ -43,8 +43,15 @@ public class TurnManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
+        Debug.Log(currentState + " " + battleOver + " " + flavortext.text);
+        for (int i = enemies.Count - 1; i >= 0; i--)
+        {
+            if (enemies[i].getCurrentHP() <= 0)
+            {
+                enemies.RemoveAt(i);
+            }
+        }
     }
 
     IEnumerator Battle()
@@ -76,18 +83,14 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.PlayerTurn:
-                    if (player.getCurrentHP() <= 0)
+                    if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
                     {
-                        currentState = TurnState.BattleLost;
+                        currentState = TurnState.BattleWon;
                     }
                     //UI control
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
                         //spawn UI button
-                    }
-                    if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
-                    {
-                        currentState = TurnState.BattleWon;
                     }
                     yield return new WaitForSeconds(1.5f); //for testing
                     currentState = TurnState.EnemyTurn;
@@ -98,11 +101,9 @@ public class TurnManager : MonoBehaviour
                     {
                         Enemy e = enemies[i];
                         EnemyAction a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
-                        a.doAction(enemies[i]);
-                        Debug.Log(e.getCurrentHP() + "/" + e.getMaxHP());
                         if ((a.getType() == "light") && (e.getCurrentHP() >= e.getMaxHP()))
                         {
-                            string t = e.getName() + " tried to heal, but its health was alrady full, so it attacks you instead!";
+                            string t = e.getName() + " tried to heal, but its health was alrady full, so it attacked you instead!";
                             flavortext.text = t;
                         }
                         else
@@ -110,6 +111,7 @@ public class TurnManager : MonoBehaviour
                             string t = e.getName() + " used " + a.getName() + "!";
                             flavortext.text = t;
                         }
+                        a.doAction(enemies[i]);
                         textbox.SetActive(true);
                         yield return new WaitForSeconds(2f);
                         textbox.SetActive(false);
@@ -128,6 +130,11 @@ public class TurnManager : MonoBehaviour
                 case TurnState.BattleWon:
                     //gain xp
                     //go back to dungeon scrawling
+                    flavortext.text = "Oh yay yippee you win!!!";
+                    textbox.SetActive(true);
+                    yield return new WaitForSeconds(1.5f);
+                    textbox.SetActive(false);
+                    battleOver = true;
                     break;
 
                 case TurnState.BattleLost:
@@ -136,8 +143,8 @@ public class TurnManager : MonoBehaviour
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f);
                     textbox.SetActive(false);
-                    Application.Quit();//replace with scene change or something of the like
                     battleOver = true;
+                    Application.Quit();//replace with scene change or something of the like
                     break;
 
                 default:
