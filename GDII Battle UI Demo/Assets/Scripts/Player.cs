@@ -36,7 +36,8 @@ public class Spell
             {
                 p.playAnim("Casting");
             }
-            double damage = ((16 * BasePower * ( p.getAttack()/ e.getDefense())/50) + 2) * (UnityEngine.Random.Range(85, 101) / 100);
+            double damage = ((16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2);
+            Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
             e.restoreHealth(-(int)damage);
         }
     }
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerSpells.Add(new Spell("Staff Attack", 40, "melee"));
+        playerSpells.Add(new Spell("Staff Attack", 100, "melee"));
         playerSpells.Add(new Spell("Fireball", 80, "fire"));
         playerSpells.Add(new Spell("Wind Blast", 80, "wind"));
         playerSpells.Add(new Spell("Minor Restoration", 40, "light"));

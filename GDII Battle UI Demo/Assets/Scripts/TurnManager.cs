@@ -44,14 +44,7 @@ public class TurnManager : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        Debug.Log(currentState + " " + battleOver + " " + flavortext.text);
-        for (int i = enemies.Count - 1; i >= 0; i--)
-        {
-            if (enemies[i].getCurrentHP() <= 0)
-            {
-                enemies.RemoveAt(i);
-            }
-        }
+        //Debug.Log(currentState + " " + battleOver + " " + flavortext.text);
     }
 
     IEnumerator Battle()
@@ -98,8 +91,14 @@ public class TurnManager : MonoBehaviour
                         //
                         //newButton.GetComponentInChildren<Text>().text = s.getSpellName();
                     }
-                    player.playerSpells[0].castSpell(player, enemies[0]);
-                    flavortext.text = "Rowan hit " + enemies[0].getName() + " with her staff!";
+
+                    //here for testing until attack ui is implemented
+                    if (enemies.Count > 0)
+                    {
+                        player.playerSpells[0].castSpell(player, enemies[0]);
+                        flavortext.text = "Rowan hit " + enemies[0].getName() + " with her staff!";
+                    }
+
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
                     textbox.SetActive(false);
@@ -107,6 +106,17 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.EnemyTurn:
+                    if (enemies.Count > 0)
+                    {
+                        for (int i = enemies.Count - 1; i >= 0; i--)
+                        {
+                            if (enemies[i].getCurrentHP() <= 0)
+                            {
+                                enemies[i].deathAnim();
+                                enemies.RemoveAt(i);
+                            }
+                        }
+                    }
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         Enemy e = enemies[i];

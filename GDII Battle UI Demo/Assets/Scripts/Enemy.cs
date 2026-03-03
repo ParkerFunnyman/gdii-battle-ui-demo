@@ -63,6 +63,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Animator anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
+    public void deathAnim()
+    {
+        anim.Play("Dead");
+    }
+
+    public void turnOff()
+    {
+    }
     public int getCurrentHP()
     {
         return currentHP;
@@ -87,7 +95,13 @@ public class Enemy : MonoBehaviour
     }
     public void restoreHealth(int healthGained)
     {   
-        if (currentHP == maxHP)
+
+        if (healthGained < 0)
+        {
+            anim.Play("Pain");
+            currentHP += healthGained;
+        }
+        else if (currentHP == maxHP)
         {
             MagicAttack(10);
         }
@@ -116,7 +130,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        currentHP = maxHP - 1;
+        currentHP = maxHP;
         anim.SetBool("attack", false);
         anim.SetBool("healing", false);
         attackType = attackType.ToLower();
