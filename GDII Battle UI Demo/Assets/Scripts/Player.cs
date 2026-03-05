@@ -36,8 +36,8 @@ public class Spell
             {
                 p.playAnim("Casting");
             }
-            double damage = ((16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2);
-            Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
+            double damage = (16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2;
+            //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
             e.restoreHealth(-(int)damage);
         }
     }

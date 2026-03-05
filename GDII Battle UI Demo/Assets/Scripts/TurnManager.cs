@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using TMPro;
 using System;
 using UnityEngine.UI;
+using System.Numerics;
 
 public class TurnManager : MonoBehaviour
 {
@@ -80,14 +81,15 @@ public class TurnManager : MonoBehaviour
                     {
                         currentState = TurnState.BattleWon;
                     }
+
                     //UI control
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
                         Debug.Log(i);
                         Spell s = player.playerSpells[i];
-                        GameObject newButton = Instantiate(textbox);
+                        GameObject newButton = Instantiate(button);
                         newButton.transform.SetParent(canvas, false);
-                        RectTransform rt = canvas.GetComponent<RectTransform>();
+                        //newButton.transform.position(new Vector3 (0,0,0));
                         //
                         //newButton.GetComponentInChildren<Text>().text = s.getSpellName();
                     }
@@ -102,10 +104,8 @@ public class TurnManager : MonoBehaviour
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
                     textbox.SetActive(false);
-                    currentState = TurnState.EnemyTurn;
-                    break;
+                    yield return new WaitForSeconds(0.5f);
 
-                case TurnState.EnemyTurn:
                     if (enemies.Count > 0)
                     {
                         for (int i = enemies.Count - 1; i >= 0; i--)
@@ -117,6 +117,17 @@ public class TurnManager : MonoBehaviour
                             }
                         }
                     }
+                    if (enemies.Count > 0)
+                    {
+                        currentState = TurnState.EnemyTurn;
+                    }
+                    else
+                    {
+                        currentState = TurnState.BattleWon;
+                    }
+                    break;
+
+                case TurnState.EnemyTurn:
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         Enemy e = enemies[i];
@@ -135,6 +146,7 @@ public class TurnManager : MonoBehaviour
                         textbox.SetActive(true);
                         yield return new WaitForSeconds(2f);
                         textbox.SetActive(false);
+                        yield return new WaitForSeconds(0.5f);
                     }
 
                     if (player.getCurrentHP() <= 0)
@@ -148,13 +160,13 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.BattleWon:
-                    //gain xp
-                    //go back to dungeon scrawling
                     flavortext.text = "Oh yay yippee you win!!!";
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f);
                     textbox.SetActive(false);
                     battleOver = true;
+                    //gain xp
+                    //go back to dungeon scrawling
                     break;
 
                 case TurnState.BattleLost:
