@@ -3,55 +3,6 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 
-public class Spell
-{
-    private string SpellName;
-    private int BasePower;
-    private string SpellType;
-
-    public Spell(string spellName, int basePower, string spellType)
-    {
-        SpellName = spellName;
-        BasePower = basePower;
-        SpellType = spellType.ToLower();
-    }
-
-    public string getSpellName()
-    {
-        return SpellName;
-    }
-
-    public void castSpell(Player p, Enemy e)
-    {
-        if (SpellType == "light"){
-            p.restoreHealth(BasePower);
-        }
-        else
-        {
-            if (SpellType == "melee")
-            {
-                p.playAnim("Slashing");
-            }
-            else
-            {
-                p.playAnim("Casting");
-            }
-            double damage = (16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2;
-            //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
-            e.restoreHealth(-(int)damage);
-        }
-    }
-}
-
-public class Item
-{
-    private string ItemName;
-    public Item(string name)
-    {
-        ItemName = name;
-    }
-}
-
 public class Player : MonoBehaviour
 {
     [SerializeField] private int maxHP = 120;
