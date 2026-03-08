@@ -88,10 +88,15 @@ public class TurnManager : MonoBehaviour
                         Debug.Log(i);
                         Spell s = player.playerSpells[i];
                         GameObject newButton = Instantiate(button);
+                        RectTransform rt = newButton.GetComponent<RectTransform>();
+
                         newButton.transform.SetParent(canvas, false);
-                        //newButton.transform.position(new Vector3 (0,0,0));
-                        //
-                        //newButton.GetComponentInChildren<Text>().text = s.getSpellName();
+
+                        float buttonY = (rt.anchoredPosition.y - (i * 90));
+                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+
+
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
                     }
 
                     //here for testing until attack ui is implemented
