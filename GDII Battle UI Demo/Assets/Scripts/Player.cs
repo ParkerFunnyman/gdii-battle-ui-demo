@@ -23,6 +23,11 @@ public class Player : MonoBehaviour
     {
         return currentHP;
     }
+
+    public int getCurrentMana()
+    {
+        return currentMana;
+    }
     public float getDefense()
     {
         return baseDef;
@@ -54,6 +59,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            currentMana -= manaUse;
             return true;
         }
     }
@@ -82,10 +88,10 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerSpells.Add(new Spell("Staff Attack", 100, "melee"));
-        playerSpells.Add(new Spell("Fireball", 80, "fire"));
-        playerSpells.Add(new Spell("Wind Blast", 80, "wind"));
-        playerSpells.Add(new Spell("Minor Restoration", 40, "light"));
+        playerSpells.Add(new Spell("Staff Attack", 100, "melee", 0));
+        playerSpells.Add(new Spell("Fireball", 80, "fire", 30));
+        playerSpells.Add(new Spell("Wind Blast", 80, "wind", 30));
+        playerSpells.Add(new Spell("Minor Restoration", 40, "light", 15));
     }
 
     // Update is called once per frame

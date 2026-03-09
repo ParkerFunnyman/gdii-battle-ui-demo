@@ -8,6 +8,7 @@ using TMPro;
 using System;
 using UnityEngine.UI;
 using System.Numerics;
+using System.Linq;
 
 public class TurnManager : MonoBehaviour
 {
@@ -48,6 +49,28 @@ public class TurnManager : MonoBehaviour
         //Debug.Log(currentState + " " + battleOver + " " + flavortext.text);
     }
 
+    void TaskOnClick()
+    {
+        //Output this to console when Button1 or Button3 is clicked
+        Debug.Log("You have clicked the button!");
+    }
+
+    void pressSpell(int index, ref bool turnContinue)
+    {
+        Spell s = player.playerSpells[index];
+        if (player.getCurrentMana() >= s.getManaCost())
+        {
+            //REPLACE WITH REFERENCE TO ENEMY
+            Debug.Log(index);
+            s.castSpell(player, enemies[0]);
+            turnContinue = false;
+            return;
+        }
+        else
+        {
+            Debug.Log("womp womp");
+        }
+    }
     IEnumerator Battle()
     {
         while (!battleOver)
@@ -77,6 +100,8 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.PlayerTurn:
+                    bool turnContinue = true;
+                    List<GameObject> buttons = new List<GameObject>();
                     if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
                     {
                         currentState = TurnState.BattleWon;
@@ -85,24 +110,28 @@ public class TurnManager : MonoBehaviour
                     //UI control
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
-                        Debug.Log(i);
                         Spell s = player.playerSpells[i];
                         GameObject newButton = Instantiate(button);
                         RectTransform rt = newButton.GetComponent<RectTransform>();
 
                         newButton.transform.SetParent(canvas, false);
 
-                        float buttonY = (rt.anchoredPosition.y - (i * 90));
+                        float buttonY = rt.anchoredPosition.y - (i * 90);
                         rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
                         newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+
+                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                        buttonComponent.onClick.AddListener(delegate {pressSpell(i, ref turnContinue); });
+
+                        buttons.Add(newButton);
                     }
 
                     //here for testing until attack ui is implemented
                     if (enemies.Count > 0)
                     {
-                        player.playerSpells[0].castSpell(player, enemies[0]);
+                        player.playerSpells[1].castSpell(player, enemies[0]);
                         flavortext.text = "Rowan hit " + enemies[0].getName() + " with her staff!";
                     }
 
@@ -122,6 +151,14 @@ public class TurnManager : MonoBehaviour
                             }
                         }
                     }
+
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
+
+
+                    Debug.Log(buttons.Count);
                     if (enemies.Count > 0)
                     {
                         currentState = TurnState.EnemyTurn;
