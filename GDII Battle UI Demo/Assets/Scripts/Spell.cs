@@ -25,26 +25,34 @@ public class Spell : MonoBehaviour
         return ManaCost;
     }
 
+    public string getSpellType()
+    {
+        return SpellType;
+    }
+
     public void castSpell(Player p, Enemy e)
     {
         if (SpellType == "melee")
         {
             p.playAnim("Slashing");
-            double damage = (16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2;
+            double damage = (16 * BasePower * (p.getAttack() / e.getDefense()) / 50.0) + 2;
             //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
             e.restoreHealth(-(int)damage);
         }
-        else{
-            if (p.useMana(ManaCost)){
-            
-                p.playAnim("Casting");
+        else
+        {
+            if (p.useMana(ManaCost))
+            {
+
                 if (SpellType == "light")
                 {
+                    p.playAnim("Healing");
                     p.restoreHealth(BasePower);
                 }
                 else
                 {
-                    double damage = (16 * BasePower * ( p.getAttack()/ e.getDefense())/50.0) + 2;
+                    p.playAnim("Casting");
+                    double damage = (16 * BasePower * (p.getAttack() / e.getDefense()) / 50.0) + 2;
                     //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
                     e.restoreHealth(-(int)damage);
                 }
@@ -58,12 +66,12 @@ public class Spell : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

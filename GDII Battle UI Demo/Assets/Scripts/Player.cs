@@ -88,10 +88,10 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerSpells.Add(new Spell("Staff Attack", 100, "melee", 0));
-        playerSpells.Add(new Spell("Fireball", 80, "fire", 30));
-        playerSpells.Add(new Spell("Wind Blast", 80, "wind", 30));
-        playerSpells.Add(new Spell("Minor Restoration", 40, "light", 15));
+        playerSpells.Add(new Spell("Staff Attack", 40, "melee", 0));
+        playerSpells.Add(new Spell("Fireball", 60, "fire", 15));
+        playerSpells.Add(new Spell("Wind Blast", 60, "wind", 15));
+        playerSpells.Add(new Spell("Minor Restoration", 35, "light", 5));
     }
 
     // Update is called once per frame

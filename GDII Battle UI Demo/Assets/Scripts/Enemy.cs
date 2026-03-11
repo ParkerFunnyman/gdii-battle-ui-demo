@@ -62,7 +62,7 @@ public class Enemy : MonoBehaviour
     public Player player;
     [SerializeField] private Animator anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
     public void deathAnim()
     {
         anim.Play("Dead");
@@ -94,7 +94,7 @@ public class Enemy : MonoBehaviour
         return enemyName;
     }
     public void restoreHealth(int healthGained)
-    {   
+    {
 
         if (healthGained < 0)
         {
@@ -119,7 +119,7 @@ public class Enemy : MonoBehaviour
     {
         //modified version of pokemon damage calc
         anim.Play("Casting");
-        double damage = (16 * baseDamage * (baseAtk / player.getDefense())/50) + 2;
+        double damage = (16 * baseDamage * (baseAtk / player.getDefense()) / 50) + 2;
         player.takeDamage((int)damage);
         return;
     }

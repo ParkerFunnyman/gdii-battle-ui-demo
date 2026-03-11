@@ -9,6 +9,7 @@ using System;
 using UnityEngine.UI;
 using System.Numerics;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 public class TurnManager : MonoBehaviour
 {
@@ -45,32 +46,12 @@ public class TurnManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {
-        //Debug.Log(currentState + " " + battleOver + " " + flavortext.text);
+    void Update()
+    {
+        Debug.Log(currentState + " " + enemies[0].getCurrentHP());
     }
 
-    void TaskOnClick()
-    {
-        //Output this to console when Button1 or Button3 is clicked
-        Debug.Log("You have clicked the button!");
-    }
 
-    void pressSpell(int index, ref bool turnContinue)
-    {
-        Spell s = player.playerSpells[index];
-        if (player.getCurrentMana() >= s.getManaCost())
-        {
-            //REPLACE WITH REFERENCE TO ENEMY
-            Debug.Log(index);
-            s.castSpell(player, enemies[0]);
-            turnContinue = false;
-            return;
-        }
-        else
-        {
-            Debug.Log("womp womp");
-        }
-    }
     IEnumerator Battle()
     {
         while (!battleOver)
@@ -79,6 +60,7 @@ public class TurnManager : MonoBehaviour
             {
                 case TurnState.BattleStart:
                     battleOver = false;
+
                     string introText;
                     if (enemies.Count > 1)
                     {
@@ -100,39 +82,46 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.PlayerTurn:
-                    bool turnContinue = true;
                     List<GameObject> buttons = new List<GameObject>();
+                    bool needInput = true;
                     if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
                     {
                         currentState = TurnState.BattleWon;
                     }
 
                     //UI control
+                    int mult = 0;
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
                         Spell s = player.playerSpells[i];
-                        GameObject newButton = Instantiate(button);
-                        RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                        newButton.transform.SetParent(canvas, false);
+                            GameObject newButton = Instantiate(button);
+                            RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                        float buttonY = rt.anchoredPosition.y - (i * 90);
-                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+                            newButton.transform.SetParent(canvas, false);
+
+                            float buttonY = rt.anchoredPosition.y - (mult * 90);
+                            rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
-                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+                            newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
 
-                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                        buttonComponent.onClick.AddListener(delegate {pressSpell(i, ref turnContinue); });
+                            Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                            buttonComponent.onClick.AddListener(delegate
+                            {
+                                s.castSpell(player, enemies[0]);
+                                flavortext.text = "Rowan used " + s.getSpellName() + " on " + enemies[0].getName() + "!";
+                                needInput = false;
+                            });
 
-                        buttons.Add(newButton);
+                            buttons.Add(newButton);
+                            mult++;
+                        
                     }
 
-                    //here for testing until attack ui is implemented
-                    if (enemies.Count > 0)
+                    while (needInput)
                     {
-                        player.playerSpells[1].castSpell(player, enemies[0]);
-                        flavortext.text = "Rowan hit " + enemies[0].getName() + " with her staff!";
+                        yield return new WaitForSeconds(0.02f);
                     }
 
                     textbox.SetActive(true);
@@ -158,7 +147,6 @@ public class TurnManager : MonoBehaviour
                     }
 
 
-                    Debug.Log(buttons.Count);
                     if (enemies.Count > 0)
                     {
                         currentState = TurnState.EnemyTurn;
