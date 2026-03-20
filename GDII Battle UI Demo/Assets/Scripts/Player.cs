@@ -89,8 +89,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerSpells.Add(new Spell("Staff Attack", 40, "melee", 0));
-        playerSpells.Add(new Spell("Fireball", 60, "fire", 15));
-        playerSpells.Add(new Spell("Wind Blast", 60, "wind", 15));
+        playerSpells.Add(new Spell("Fireball", 60, "fire", 10));
+        playerSpells.Add(new Spell("Wind Blast", 60, "wind", 10));
         playerSpells.Add(new Spell("Minor Restoration", 35, "light", 5));
     }
 

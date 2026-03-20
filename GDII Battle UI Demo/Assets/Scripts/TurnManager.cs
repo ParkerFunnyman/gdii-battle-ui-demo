@@ -48,7 +48,6 @@ public class TurnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(currentState + " " + enemies[0].getCurrentHP());
     }
 
 
@@ -84,12 +83,15 @@ public class TurnManager : MonoBehaviour
                 case TurnState.PlayerTurn:
                     List<GameObject> buttons = new List<GameObject>();
                     bool needInput = true;
+                    Enemy eSelected = null; //enemy player selects
+
+                    //redudant check for if an enemy has a self destruct spell or something
                     if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
                     {
                         currentState = TurnState.BattleWon;
                     }
 
-                    //UI control
+                    //Spawns a button for each spell in the player's spell array
                     int mult = 0;
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
@@ -110,7 +112,14 @@ public class TurnManager : MonoBehaviour
                             buttonComponent.onClick.AddListener(delegate
                             {
                                 s.castSpell(player, enemies[0]);
-                                flavortext.text = "Rowan used " + s.getSpellName() + " on " + enemies[0].getName() + "!";
+                                if (s.getSpellType() == "light")
+                                {
+                                    flavortext.text = "Rowan used " + s.getSpellName() + "!";
+                                }
+                                else
+                                {
+                                    flavortext.text = "Rowan used " + s.getSpellName() + " on " + enemies[0].getName() + "!";
+                                }
                                 needInput = false;
                             });
 
@@ -119,16 +128,25 @@ public class TurnManager : MonoBehaviour
                         
                     }
 
+                    //Pauses game until attack is selected
                     while (needInput)
                     {
                         yield return new WaitForSeconds(0.02f);
                     }
 
+                    //Removes buttons
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
+
+                    //Displays textbox saying what spell was chosen
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
                     textbox.SetActive(false);
                     yield return new WaitForSeconds(0.5f);
 
+                    //makes enemy do their death animation if dead
                     if (enemies.Count > 0)
                     {
                         for (int i = enemies.Count - 1; i >= 0; i--)
@@ -141,12 +159,7 @@ public class TurnManager : MonoBehaviour
                         }
                     }
 
-                    for (int i = buttons.Count - 1; i >= 0; i--)
-                    {
-                        Destroy(buttons[i]);
-                    }
-
-
+                    //switches state
                     if (enemies.Count > 0)
                     {
                         currentState = TurnState.EnemyTurn;
