@@ -28,7 +28,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private GameObject textbox;
     [SerializeField] private Transform canvas;
     [SerializeField] private TextMeshProUGUI flavortext;
-    public GameObject button;
+    [SerializeField] private GameObject button;
+    [SerializeField] private GameObject arrow;
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
 
