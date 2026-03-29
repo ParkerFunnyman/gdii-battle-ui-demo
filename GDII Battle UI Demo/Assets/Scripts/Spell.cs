@@ -6,6 +6,7 @@ public class Spell : MonoBehaviour
     private int BasePower;
     private string SpellType;
     private int ManaCost;
+    AudioSource playerAS;
 
     public Spell(string spellName, int basePower, string spellType, int manaCost)
     {
@@ -32,6 +33,7 @@ public class Spell : MonoBehaviour
 
     public void castSpell(Player p, Enemy e)
     {
+        playerAS = p.GetComponent<AudioSource>();
         if (SpellType == "melee")
         {
             p.playAnim("Slashing");
@@ -43,7 +45,7 @@ public class Spell : MonoBehaviour
         {
             if (p.useMana(ManaCost))
             {
-
+                playerAS.Play();
                 if (SpellType == "light")
                 {
                     p.playAnim("Healing");

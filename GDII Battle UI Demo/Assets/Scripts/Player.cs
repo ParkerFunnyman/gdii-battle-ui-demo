@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public List<Spell> playerSpells = new List<Spell>();
     public List<Item> playerItems = new List<Item>();
 
+
     public int getCurrentHP()
     {
         return currentHP;

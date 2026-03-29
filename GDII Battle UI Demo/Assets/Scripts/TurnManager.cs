@@ -1,15 +1,16 @@
-using UnityEngine;
+using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using NUnit.Framework;
-using Unity.VisualScripting;
-using TMPro;
-using System;
-using UnityEngine.UI;
-using System.Numerics;
 using System.Linq;
+using System.Numerics;
+using System.Xml.Serialization;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
@@ -83,7 +84,7 @@ public class TurnManager : MonoBehaviour
                 case TurnState.PlayerTurn:
                     List<GameObject> buttons = new List<GameObject>();
                     bool needInput = true;
-                    Enemy eSelected = null; //enemy player selects
+                    Enemy eSelected = enemies[0]; //enemy player selects
 
                     //redudant check for if an enemy has a self destruct spell or something
                     if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
@@ -111,14 +112,14 @@ public class TurnManager : MonoBehaviour
                             Button buttonComponent = newButton.GetComponentInChildren<Button>();
                             buttonComponent.onClick.AddListener(delegate
                             {
-                                s.castSpell(player, enemies[0]);
+                                s.castSpell(player, eSelected);
                                 if (s.getSpellType() == "light")
                                 {
                                     flavortext.text = "Rowan used " + s.getSpellName() + "!";
                                 }
                                 else
                                 {
-                                    flavortext.text = "Rowan used " + s.getSpellName() + " on " + enemies[0].getName() + "!";
+                                    flavortext.text = "Rowan used " + s.getSpellName() + " on " + eSelected.getName() + "!";
                                 }
                                 needInput = false;
                             });
