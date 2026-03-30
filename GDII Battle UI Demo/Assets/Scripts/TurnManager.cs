@@ -85,6 +85,7 @@ public class TurnManager : MonoBehaviour
                 case TurnState.PlayerTurn:
                     List<GameObject> buttons = new List<GameObject>();
                     bool needInput = true;
+                    bool needSelection = true;
                     Enemy eSelected = enemies[0]; //enemy player selects
 
                     //redudant check for if an enemy has a self destruct spell or something
@@ -100,55 +101,35 @@ public class TurnManager : MonoBehaviour
                     {
                         Spell s = player.playerSpells[i];
 
-                            GameObject newButton = Instantiate(button);
-                            RectTransform rt = newButton.GetComponent<RectTransform>();
+                        GameObject newButton = Instantiate(button);
+                        RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                            newButton.transform.SetParent(canvas, false);
+                        newButton.transform.SetParent(canvas, false);
 
-                            float buttonY = rt.anchoredPosition.y - (mult * 90);
-                            rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+                        float buttonY = rt.anchoredPosition.y - (mult * 90);
+                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
-                            newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
 
-                            Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                            buttonComponent.onClick.AddListener(delegate
+                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                        buttonComponent.onClick.AddListener(delegate
+                        {
+                            s.castSpell(player, eSelected);
+                            if (s.getSpellType() == "light")
                             {
-                                if (enemies.Count > 1)
-                                {
-                                    //while enter not pressed
-                                        int selectIndex = 0;
-                                        GameObject arrowToEnemy = Instantiate(arrow);
-                                        arrowToEnemy.transform.position = enemies[0].getPosition(); 
-                                        arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
-                                        //if left arrow hit
-                                            //goes to enemy n - 1
-                                        //if right arrow hit 
-                                            //goes to enemy n + 1
-                                        //if enter hit
-                                            //eSelected = enemies[n]
-                                    
-                                    //remove arrow
-                                }
-                                else
-                                {
-                                    eSelected = enemies[0];
-                                }
-                                s.castSpell(player, eSelected);
-                                if (s.getSpellType() == "light")
-                                {
-                                    flavortext.text = "Rowan used " + s.getSpellName() + "!";
-                                }
-                                else
-                                {
-                                    flavortext.text = "Rowan used " + s.getSpellName() + " on " + eSelected.getName() + "!";
-                                }
-                                needInput = false;
-                            });
+                                flavortext.text = "Rowan used " + s.getSpellName() + "!";
+                            }
+                            else
+                            {
+                                flavortext.text = "Rowan used " + s.getSpellName() + " on " + eSelected.getName() + "!";
+                            }
+                            needInput = false;
+                        });
 
-                            buttons.Add(newButton);
-                            mult++;
-                        
+                        buttons.Add(newButton);
+                        mult++;
+
                     }
 
                     //Pauses game until attack is selected
@@ -157,6 +138,56 @@ public class TurnManager : MonoBehaviour
                         yield return new WaitForSeconds(0.02f);
                     }
 
+                    if (enemies.Count > 1)
+                    {
+                        //while enter not pressed
+                        int selectIndex = 0;
+                        GameObject arrowToEnemy = Instantiate(arrow);
+                        arrowToEnemy.transform.position = enemies[0].getPosition();
+                        arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
+                        if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+                        {
+                            selectIndex--;
+                            if (selectIndex < 0)
+                            {
+                                selectIndex = enemies.Count - 1;
+                            }
+                            else if (selectIndex >= enemies.Count)
+                            {
+                                selectIndex = 0;
+                            }
+                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition();
+                            arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
+                        }
+                        else if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+                        {
+                            selectIndex++;
+                            if (selectIndex < 0)
+                            {
+                                selectIndex = enemies.Count - 1;
+                            }
+                            else if (selectIndex >= enemies.Count)
+                            {
+                                selectIndex = 0;
+                            }
+                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition();
+                            arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
+                        }
+                        else if (Keyboard.current.enterKey.isPressed || Keyboard.current.zKey.isPressed)
+                        {
+                            eSelected = enemies[selectIndex];
+                            needSelection = false;
+                            Destroy(arrowToEnemy);
+                        }
+                        //if enter hit
+
+                        //remove arrow
+                    }
+                    else
+                    {
+                        eSelected = enemies[0];
+                        needSelection = false;
+                    }
                     //Removes buttons
                     for (int i = buttons.Count - 1; i >= 0; i--)
                     {
