@@ -93,6 +93,7 @@ public class TurnManager : MonoBehaviour
                         currentState = TurnState.BattleWon;
                     }
 
+
                     //Spawns a button for each spell in the player's spell array
                     int mult = 0;
                     for (int i = 0; i < player.playerSpells.Count; i++)
@@ -113,6 +114,26 @@ public class TurnManager : MonoBehaviour
                             Button buttonComponent = newButton.GetComponentInChildren<Button>();
                             buttonComponent.onClick.AddListener(delegate
                             {
+                                if (enemies.Count > 1)
+                                {
+                                    //while enter not pressed
+                                        int selectIndex = 0;
+                                        GameObject arrowToEnemy = Instantiate(arrow);
+                                        arrowToEnemy.transform.position = enemies[0].getPosition(); 
+                                        arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
+                                        //if left arrow hit
+                                            //goes to enemy n - 1
+                                        //if right arrow hit 
+                                            //goes to enemy n + 1
+                                        //if enter hit
+                                            //eSelected = enemies[n]
+                                    
+                                    //remove arrow
+                                }
+                                else
+                                {
+                                    eSelected = enemies[0];
+                                }
                                 s.castSpell(player, eSelected);
                                 if (s.getSpellType() == "light")
                                 {
