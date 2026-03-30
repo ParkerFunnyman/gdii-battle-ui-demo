@@ -882,8 +882,6 @@ MonoBehaviour:
   anim: {fileID: 899245194}
   HPText: {fileID: 939347347}
   manaText: {fileID: 1432338249}
-  playerSpells: []
-  playerItems: []
 --- !u!82 &899245197
 AudioSource:
   m_ObjectHideFlags: 0

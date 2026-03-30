@@ -85,7 +85,7 @@ public class TurnManager : MonoBehaviour
                 case TurnState.PlayerTurn:
                     List<GameObject> buttons = new List<GameObject>();
                     bool needInput = true;
-                    bool needSelection = true;
+                    Spell selectedSpell = null;
                     Enemy eSelected = enemies[0]; //enemy player selects
 
                     //redudant check for if an enemy has a self destruct spell or something
@@ -115,15 +115,7 @@ public class TurnManager : MonoBehaviour
                         Button buttonComponent = newButton.GetComponentInChildren<Button>();
                         buttonComponent.onClick.AddListener(delegate
                         {
-                            s.castSpell(player, eSelected);
-                            if (s.getSpellType() == "light")
-                            {
-                                flavortext.text = "Rowan used " + s.getSpellName() + "!";
-                            }
-                            else
-                            {
-                                flavortext.text = "Rowan used " + s.getSpellName() + " on " + eSelected.getName() + "!";
-                            }
+                            selectedSpell = s;
                             needInput = false;
                         });
 
@@ -138,47 +130,59 @@ public class TurnManager : MonoBehaviour
                         yield return new WaitForSeconds(0.02f);
                     }
 
+                    //Removes buttons
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
+
                     if (enemies.Count > 1)
                     {
                         //while enter not pressed
                         int selectIndex = 0;
                         GameObject arrowToEnemy = Instantiate(arrow);
-                        arrowToEnemy.transform.position = enemies[0].getPosition();
-                        arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
-                        if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+
+                        bool selecting = true;
+                        arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
+                        while (selecting)
                         {
-                            selectIndex--;
-                            if (selectIndex < 0)
+                
+                            if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
                             {
-                                selectIndex = enemies.Count - 1;
+                                selectIndex--;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
-                            else if (selectIndex >= enemies.Count)
+                            else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
                             {
-                                selectIndex = 0;
+                                selectIndex++;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
-                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition();
-                            arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
+                            else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
+                            {
+                                eSelected = enemies[selectIndex];
+                                selecting = false;
+                            }
+                            yield return null;
                         }
-                        else if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
-                        {
-                            selectIndex++;
-                            if (selectIndex < 0)
-                            {
-                                selectIndex = enemies.Count - 1;
-                            }
-                            else if (selectIndex >= enemies.Count)
-                            {
-                                selectIndex = 0;
-                            }
-                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition();
-                            arrowToEnemy.transform.position += new UnityEngine.Vector3(0, 100, 0);
-                        }
-                        else if (Keyboard.current.enterKey.isPressed || Keyboard.current.zKey.isPressed)
-                        {
-                            eSelected = enemies[selectIndex];
-                            needSelection = false;
-                            Destroy(arrowToEnemy);
-                        }
+
+                        Destroy(arrowToEnemy);
                         //if enter hit
 
                         //remove arrow
@@ -186,14 +190,17 @@ public class TurnManager : MonoBehaviour
                     else
                     {
                         eSelected = enemies[0];
-                        needSelection = false;
-                    }
-                    //Removes buttons
-                    for (int i = buttons.Count - 1; i >= 0; i--)
-                    {
-                        Destroy(buttons[i]);
                     }
 
+                    selectedSpell.castSpell(player, eSelected);
+                    if (selectedSpell.getSpellType() == "light")
+                    {
+                        flavortext.text = "Rowan used " + selectedSpell.getSpellName() + "!";
+                    }
+                    else
+                    {
+                        flavortext.text = "Rowan used " + selectedSpell.getSpellName() + " on " + eSelected.getName() + "!";
+                    }
                     //Displays textbox saying what spell was chosen
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
