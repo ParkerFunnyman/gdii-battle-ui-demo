@@ -139,9 +139,6 @@ public class Enemy : MonoBehaviour
         anim.SetBool("healing", false);
         attackType = attackType.ToLower();
         actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
-        actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
-        actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
-        actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
         actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
     }
 

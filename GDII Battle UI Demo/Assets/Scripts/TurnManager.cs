@@ -235,7 +235,20 @@ public class TurnManager : MonoBehaviour
                     for (int i = 0; i < enemies.Count; i++)
                     {
                         Enemy e = enemies[i];
-                        EnemyAction a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
+                        EnemyAction a = null;
+                        if (e.getCurrentHP() < (e.getMaxHP() * 0.25))
+                        {
+                            a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
+                        }
+                        else
+                        {
+                            a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
+                            while (a.getType() == "light")
+                            {
+                                a = e.actions[UnityEngine.Random.Range(0, e.actions.Count)];
+                            }
+                        }
+
                         if ((a.getType() == "light") && (e.getCurrentHP() >= e.getMaxHP()))
                         {
                             string t = e.getName() + " tried to heal, but its health was already full, so it attacked you instead!";

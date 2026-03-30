@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyName: Jean Enemy
-  maxHP: 50
+  maxHP: 25
   attackType: fire
   player: {fileID: 899245195}
   anim: {fileID: 143363070}
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   enemyName: John Enemy
-  maxHP: 15
+  maxHP: 25
   attackType: fire
   player: {fileID: 899245195}
   anim: {fileID: 307922275}
