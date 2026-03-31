@@ -53,7 +53,8 @@ public class Spell
         {
             if (p.useMana(ManaCost))
             {
-                p.playAudios("spell");
+                
+                p.playAudios(0.5f);
                 if (SpellType == "light")
                 {
                     p.playAnim("Healing");
@@ -62,6 +63,7 @@ public class Spell
                 else
                 {
                     p.playAnim("Casting");
+                    //summon magic ball
                     double damage = (16 * BasePower * (p.getAttack() / e.getDefense()) / 50.0) + 2;
                     //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
                     e.restoreHealth(-(int)damage);

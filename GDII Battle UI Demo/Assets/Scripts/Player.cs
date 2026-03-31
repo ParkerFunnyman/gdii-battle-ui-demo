@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -20,9 +21,14 @@ public class Player : MonoBehaviour
     public List<Item> playerItems = new List<Item>();
 
     private AudioSource playerAS;
-    public AudioClip spellAudio;
-    public AudioClip meleeAudio;
+    [SerializeField] private AudioClip spellAudio;
+    [SerializeField] private AudioClip meleeAudio;
+    [SerializeField] private GameObject magicProjectile;
 
+    public GameObject getProjectile()
+    {
+        return magicProjectile;
+    }
     public void playAudios(string input)
     {
         input = input.ToLower();
@@ -35,14 +41,30 @@ public class Player : MonoBehaviour
             playerAS.PlayOneShot(spellAudio);
         }
     }
+
+    //plays ONLY spell audio with delay
+    public void playAudios(float delay)
+    {
+        playerAS.PlayDelayed(delay);
+    }
     public int getCurrentHP()
     {
         return currentHP;
     }
 
+    public int getMaxHP()
+    {
+        return maxHP;
+    }
+
     public int getCurrentMana()
     {
         return currentMana;
+    }
+
+    public int getMaxMana()
+    {
+        return maxMana;
     }
     public float getDefense()
     {

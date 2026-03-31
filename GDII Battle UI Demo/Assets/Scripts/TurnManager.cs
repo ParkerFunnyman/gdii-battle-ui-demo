@@ -32,6 +32,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private GameObject arrow;
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
+    private StatusUI status;
 
     public void addEnemy(Enemy e)
     {
@@ -40,6 +41,8 @@ public class TurnManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        status = canvas.GetComponentInChildren<StatusUI>();
+        status.SetMaxHealth(player.getMaxHP(), player.getMaxMana());
         battleOver = false;
         textbox.SetActive(false);
         flavortext.text = "if you're seeing this text I fucked up somewhere";
@@ -50,6 +53,8 @@ public class TurnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        status.SetHealth(player.getCurrentHP());
+        status.SetMana(player.getCurrentMana());
     }
 
 

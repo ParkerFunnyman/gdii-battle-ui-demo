@@ -111,7 +111,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            anim.Play("Backflip");
+            anim.Play("Heal");
             currentHP += healthGained;
             if (currentHP > maxHP)
             {
@@ -138,7 +138,14 @@ public class Enemy : MonoBehaviour
         anim.SetBool("attack", false);
         anim.SetBool("healing", false);
         attackType = attackType.ToLower();
-        actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
+        if (attackType == "fire")
+        {
+            actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
+        }
+        else if (attackType == "wind")
+        {
+            actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
+        }
         actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
     }
 
