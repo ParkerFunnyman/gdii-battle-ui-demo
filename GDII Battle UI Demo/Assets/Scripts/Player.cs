@@ -19,7 +19,22 @@ public class Player : MonoBehaviour
     public List<Spell> playerSpells = new List<Spell>();
     public List<Item> playerItems = new List<Item>();
 
+    private AudioSource playerAS;
+    public AudioClip spellAudio;
+    public AudioClip meleeAudio;
 
+    public void playAudios(string input)
+    {
+        input = input.ToLower();
+        if (input == "melee")
+        {
+            playerAS.PlayOneShot(meleeAudio);
+        }
+        else if (input == "spell")
+        {
+            playerAS.PlayOneShot(spellAudio);
+        }
+    }
     public int getCurrentHP()
     {
         return currentHP;
@@ -89,10 +104,12 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerAS = GetComponent<AudioSource>();
+
         playerSpells.Add(new Spell("Staff Attack", 40, "melee", 0));
         playerSpells.Add(new Spell("Fireball", 60, "fire", 10));
         playerSpells.Add(new Spell("Wind Blast", 60, "wind", 10));
-        playerSpells.Add(new Spell("Minor Restoration", 35, "light", 5));
+        playerSpells.Add(new Spell("Lesser Restoration", 35, "light", 5));
     }
 
     // Update is called once per frame

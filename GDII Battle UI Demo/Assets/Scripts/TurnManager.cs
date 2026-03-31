@@ -115,8 +115,17 @@ public class TurnManager : MonoBehaviour
                         Button buttonComponent = newButton.GetComponentInChildren<Button>();
                         buttonComponent.onClick.AddListener(delegate
                         {
-                            selectedSpell = s;
-                            needInput = false;
+
+                            if (s.getManaCost() <= player.getCurrentMana())
+                            {
+                                selectedSpell = s;
+                                needInput = false;
+                            }
+                            else
+                            {
+                                flavortext.text = "Rowan does not have enough MANA to cast this spell.";
+                                textbox.SetActive(true);
+                            }
                         });
 
                         buttons.Add(newButton);
@@ -136,7 +145,7 @@ public class TurnManager : MonoBehaviour
                         Destroy(buttons[i]);
                     }
 
-                    if (enemies.Count > 1)
+                    if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
                     {
                         //while enter not pressed
                         int selectIndex = 0;
