@@ -40,7 +40,10 @@ public class TurnManager : MonoBehaviour
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
-    {
+    {   for (int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].setPlayer(player);
+        }
         status = canvas.GetComponentInChildren<StatusUI>();
         status.SetMaxHealth(player.getMaxHP(), player.getMaxMana());
         battleOver = false;

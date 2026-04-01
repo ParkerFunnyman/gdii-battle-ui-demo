@@ -59,10 +59,14 @@ public class Enemy : MonoBehaviour
     private float baseDef = 50.0f;
     [SerializeField] private string attackType = "";
     public List<EnemyAction> actions = new List<EnemyAction>();
-    public Player player;
+    private Player player;
     [SerializeField] private Animator anim;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    public void setPlayer(Player p)
+    {
+        player = p;
+    }
     public Vector3 getPosition()
     {
         return transform.position;
@@ -135,8 +139,6 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentHP = maxHP;
-        anim.SetBool("attack", false);
-        anim.SetBool("healing", false);
         attackType = attackType.ToLower();
         if (attackType == "fire")
         {
