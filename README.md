@@ -1,5 +1,7 @@
 # Project Vessel (TITLE PENDING)
-This is the main repo for Project Vessel, a WIP as the final project for Intro to Game Design II (WLLC 30403) by Buncha Goons. 
+This is the main repo for Project Vessel, a WIP as the final project for Intro to Game Design II (WLLC 30403) by Buncha Goons.
+
+[Watch our trailer here!](https://youtu.be/O_VKRhK4aV0?si=nyyHqTCY1EznqkPu)
 
 ![Screenshot showing the battle system](Screenshot.png)
 
