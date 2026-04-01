@@ -294,7 +294,7 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.BattleWon:
-                    flavortext.text = "Oh yay yippee you win!!!";
+                    flavortext.text = "All enemies are defeated! You gained " + UnityEngine.Random.Range(40,50) + " XP.";
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f);
                     textbox.SetActive(false);
@@ -305,7 +305,7 @@ public class TurnManager : MonoBehaviour
 
                 case TurnState.BattleLost:
                     player.die();
-                    flavortext.text = "You lost! How tragic!";
+                    flavortext.text = "You've perished.";
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f);
                     textbox.SetActive(false);

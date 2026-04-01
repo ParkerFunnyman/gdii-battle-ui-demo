@@ -61,6 +61,9 @@ public class Enemy : MonoBehaviour
     public List<EnemyAction> actions = new List<EnemyAction>();
     private Player player;
     [SerializeField] private Animator anim;
+    private AudioSource enemyAS;
+    public float audioDelay = 1.0f;
+    [SerializeField] private AudioClip spellAudio;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public void setPlayer(Player p)
@@ -126,6 +129,7 @@ public class Enemy : MonoBehaviour
     public void MagicAttack(int baseDamage)
     {
         //modified version of pokemon damage calc
+        enemyAS.PlayDelayed(audioDelay);
         anim.Play("Casting");
         double damage = (16 * baseDamage * (baseAtk / player.getDefense()) / 50) + 2;
         player.takeDamage((int)damage);
@@ -138,6 +142,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        enemyAS = GetComponent<AudioSource>();
         currentHP = maxHP;
         attackType = attackType.ToLower();
         if (attackType == "fire")

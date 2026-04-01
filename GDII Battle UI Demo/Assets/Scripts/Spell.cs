@@ -54,7 +54,7 @@ public class Spell
             if (p.useMana(ManaCost))
             {
                 
-                p.playAudios(0.5f);
+                p.playAudios(0.2f);
                 if (SpellType == "light")
                 {
                     p.playAnim("Healing");
