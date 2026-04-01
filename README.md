@@ -29,3 +29,4 @@ The truth awaits you, young Vessel.
 ## Credits
 - Animations and Placeholder Models: [Mixamo](https://www.mixamo.com/#/) from [Adobe](https://www.adobe.com/)
 - Dialogue Manager: [Charles Engine](https://www.charlesgames.net/charles-engine) from [Charles Games](https://www.charlesgames.net/)
+- [CARCAXIS – Retro PSX Monster](https://imaginais.itch.io/carcaxis-retro-psx-monster) by [imaginais](https://imaginais.itch.io/) on itch.io
