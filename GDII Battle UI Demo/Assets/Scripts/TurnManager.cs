@@ -108,306 +108,306 @@ public class TurnManager : MonoBehaviour
                     }
 
                     //Handle internal states of the PlayerTurn state
-                    while (PlayerTurnState != 4)
-                    {
-                        switch (PlayerTurnState)
-                        {
-                            case 0: //list potential actions
-                                int mult1 = 0;
-                                for (int i = 1; i < player.playerSpells.Count; i++)
-                                {
-                                    Spell s = player.playerSpells[i];
+                    // while (PlayerTurnState != 4)
+                    // {
+                    //     switch (PlayerTurnState)
+                    //     {
+                    //         case 0: //list potential actions
+                    //             int mult1 = 0;
+                    //             for (int i = 1; i < player.playerSpells.Count; i++)
+                    //             {
+                    //                 Spell s = player.playerSpells[i];
 
-                                    GameObject newButton = Instantiate(button);
-                                    RectTransform rt = newButton.GetComponent<RectTransform>();
+                    //                 GameObject newButton = Instantiate(button);
+                    //                 RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                                    newButton.transform.SetParent(canvas, false);
+                    //                 newButton.transform.SetParent(canvas, false);
 
-                                    float buttonY = rt.anchoredPosition.y - (mult1 * 90);
-                                    rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
-
-
-                                    newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
-
-                                    Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                                    switch (i)
-                                    {
-                                        case 1:
-                                            buttonComponent.onClick.AddListener(delegate
-                                            {
-                                                selectedSpell = player.playerSpells[0];
-                                                PlayerTurnState = 2;
-                                            });
-                                            break;
-                                        case 2:
-                                            buttonComponent.onClick.AddListener(delegate
-                                            {
-                                                PlayerTurnState = 1;
-                                            });
-                                            break;
-                                        case 3:
-                                            buttonComponent.onClick.AddListener(delegate
-                                            {
-                                                Debug.Log("Items!");
-                                            });
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                    buttons.Add(newButton);
-                                    mult1++;
-
-                                }
-
-                                // //Removes buttons
-                                // for (int i = buttons.Count - 1; i >= 0; i--)
-                                // {
-                                //     Destroy(buttons[i]);
-                                // }
-                                // break;
-
-                            case 1: //list spells
-                                int mult2 = 0;
-                                for (int i = 1; i < player.playerSpells.Count; i++)
-                                {
-                                    Spell s = player.playerSpells[i];
-
-                                    GameObject newButton = Instantiate(button);
-                                    RectTransform rt = newButton.GetComponent<RectTransform>();
-
-                                    newButton.transform.SetParent(canvas, false);
-
-                                    float buttonY = rt.anchoredPosition.y - (mult2 * 90);
-                                    rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+                    //                 float buttonY = rt.anchoredPosition.y - (mult1 * 90);
+                    //                 rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
-                                    newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+                    //                 newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
 
-                                    Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                                    buttonComponent.onClick.AddListener(delegate
-                                    {
+                    //                 Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                    //                 switch (i)
+                    //                 {
+                    //                     case 1:
+                    //                         buttonComponent.onClick.AddListener(delegate
+                    //                         {
+                    //                             selectedSpell = player.playerSpells[0];
+                    //                             PlayerTurnState = 2;
+                    //                         });
+                    //                         break;
+                    //                     case 2:
+                    //                         buttonComponent.onClick.AddListener(delegate
+                    //                         {
+                    //                             PlayerTurnState = 1;
+                    //                         });
+                    //                         break;
+                    //                     case 3:
+                    //                         buttonComponent.onClick.AddListener(delegate
+                    //                         {
+                    //                             Debug.Log("Items!");
+                    //                         });
+                    //                         break;
+                    //                     default:
+                    //                         break;
+                    //                 }
 
-                                        if (s.getManaCost() <= player.getCurrentMana())
-                                        {
-                                            selectedSpell = s;
-                                            needInput = false;
-                                        }
-                                        else
-                                        {
-                                            flavortext.text = "Rowan does not have enough MANA to cast this spell.";
-                                            textbox.SetActive(true);
-                                        }
-                                    });
+                    //                 buttons.Add(newButton);
+                    //                 mult1++;
 
-                                    buttons.Add(newButton);
-                                    mult2++;
+                    //             }
 
-                                }
+                    //             // //Removes buttons
+                    //             // for (int i = buttons.Count - 1; i >= 0; i--)
+                    //             // {
+                    //             //     Destroy(buttons[i]);
+                    //             // }
+                    //             // break;
 
-                                if (Keyboard.current.backspaceKey.isPressed)
-                                {
-                                    PlayerTurnState = 0;
-                                    needInput = false;
-                                }
-                                //Pauses game until attack is selected
-                                while (needInput)
-                                {
-                                    yield return new WaitForSeconds(0.02f);
-                                }
+                    //         case 1: //list spells
+                    //             int mult2 = 0;
+                    //             for (int i = 1; i < player.playerSpells.Count; i++)
+                    //             {
+                    //                 Spell s = player.playerSpells[i];
 
-                                //Removes buttons
-                                for (int i = buttons.Count - 1; i >= 0; i--)
-                                {
-                                    Destroy(buttons[i]);
-                                }
-                                break;
+                    //                 GameObject newButton = Instantiate(button);
+                    //                 RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                            case 2: //enemy select
-                                if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
-                                {
-                                    //while enter not pressed
-                                    int selectIndex = 0;
-                                    GameObject arrowToEnemy = Instantiate(arrow);
-                                    UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+                    //                 newButton.transform.SetParent(canvas, false);
 
-                                    bool selecting = true;
-                                    arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
-                                    while (selecting)
-                                    {
+                    //                 float buttonY = rt.anchoredPosition.y - (mult2 * 90);
+                    //                 rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
-                                        if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
-                                        {
-                                            selectIndex--;
-                                            if (selectIndex < 0)
-                                            {
-                                                selectIndex = enemies.Count - 1;
-                                            }
-                                            else if (selectIndex >= enemies.Count)
-                                            {
-                                                selectIndex = 0;
-                                            }
-                                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                                        }
-                                        else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
-                                        {
-                                            selectIndex++;
-                                            if (selectIndex < 0)
-                                            {
-                                                selectIndex = enemies.Count - 1;
-                                            }
-                                            else if (selectIndex >= enemies.Count)
-                                            {
-                                                selectIndex = 0;
-                                            }
-                                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                                        }
-                                        else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
-                                        {
-                                            eSelected = enemies[selectIndex];
-                                            selecting = false;
-                                        }
-                                        //DO LATER
-                                        //return to previous menu
-                                        else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
-                                        {
-                                            PlayerTurnState = 0;
-                                            selecting = false;
-                                        }
-                                        yield return null;
-                                    }
 
-                                    Destroy(arrowToEnemy);
-                                }
-                                //If only one enemy, don't bother running script
-                                else
-                                {
-                                    eSelected = enemies[0];
-                                }
-                                break;
-                            case 3: //
-                                break;
-                            case 4:
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                    //                 newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+
+                    //                 Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                    //                 buttonComponent.onClick.AddListener(delegate
+                    //                 {
+
+                    //                     if (s.getManaCost() <= player.getCurrentMana())
+                    //                     {
+                    //                         selectedSpell = s;
+                    //                         needInput = false;
+                    //                     }
+                    //                     else
+                    //                     {
+                    //                         flavortext.text = "Rowan does not have enough MANA to cast this spell.";
+                    //                         textbox.SetActive(true);
+                    //                     }
+                    //                 });
+
+                    //                 buttons.Add(newButton);
+                    //                 mult2++;
+
+                    //             }
+
+                    //             if (Keyboard.current.backspaceKey.isPressed)
+                    //             {
+                    //                 PlayerTurnState = 0;
+                    //                 needInput = false;
+                    //             }
+                    //             //Pauses game until attack is selected
+                    //             while (needInput)
+                    //             {
+                    //                 yield return new WaitForSeconds(0.02f);
+                    //             }
+
+                    //             //Removes buttons
+                    //             for (int i = buttons.Count - 1; i >= 0; i--)
+                    //             {
+                    //                 Destroy(buttons[i]);
+                    //             }
+                    //             break;
+
+                    //         case 2: //enemy select
+                    //             if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
+                    //             {
+                    //                 //while enter not pressed
+                    //                 int selectIndex = 0;
+                    //                 GameObject arrowToEnemy = Instantiate(arrow);
+                    //                 UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+
+                    //                 bool selecting = true;
+                    //                 arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
+                    //                 while (selecting)
+                    //                 {
+
+                    //                     if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                    //                     {
+                    //                         selectIndex--;
+                    //                         if (selectIndex < 0)
+                    //                         {
+                    //                             selectIndex = enemies.Count - 1;
+                    //                         }
+                    //                         else if (selectIndex >= enemies.Count)
+                    //                         {
+                    //                             selectIndex = 0;
+                    //                         }
+                    //                         arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                    //                     }
+                    //                     else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                    //                     {
+                    //                         selectIndex++;
+                    //                         if (selectIndex < 0)
+                    //                         {
+                    //                             selectIndex = enemies.Count - 1;
+                    //                         }
+                    //                         else if (selectIndex >= enemies.Count)
+                    //                         {
+                    //                             selectIndex = 0;
+                    //                         }
+                    //                         arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                    //                     }
+                    //                     else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
+                    //                     {
+                    //                         eSelected = enemies[selectIndex];
+                    //                         selecting = false;
+                    //                     }
+                    //                     //DO LATER
+                    //                     //return to previous menu
+                    //                     else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+                    //                     {
+                    //                         PlayerTurnState = 0;
+                    //                         selecting = false;
+                    //                     }
+                    //                     yield return null;
+                    //                 }
+
+                    //                 Destroy(arrowToEnemy);
+                    //             }
+                    //             //If only one enemy, don't bother running script
+                    //             else
+                    //             {
+                    //                 eSelected = enemies[0];
+                    //             }
+                    //             break;
+                    //         case 3: //
+                    //             break;
+                    //         case 4:
+                    //             break;
+                    //         default:
+                    //             break;
+                    //     }
+                    // }
 
                     //wait until spell is chosen
 
                     //castSpell(eSelected, player)
 
                     //Spawns a button for each spell in the player's spell array
-                    // for (int i = 0; i < player.playerSpells.Count; i++)
-                    // {
-                    //     Spell s = player.playerSpells[i];
+                    for (int i = 0; i < player.playerSpells.Count; i++)
+                    {
+                        Spell s = player.playerSpells[i];
 
-                    //     GameObject newButton = Instantiate(button);
-                    //     RectTransform rt = newButton.GetComponent<RectTransform>();
+                        GameObject newButton = Instantiate(button);
+                        RectTransform rt = newButton.GetComponent<RectTransform>();
 
-                    //     newButton.transform.SetParent(canvas, false);
+                        newButton.transform.SetParent(canvas, false);
 
-                    //     float buttonY = rt.anchoredPosition.y - (mult * 90);
-                    //     rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+                        float buttonY = rt.anchoredPosition.y - (mult * 90);
+                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
-                    //     newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
 
-                    //     Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                    //     buttonComponent.onClick.AddListener(delegate
-                    //     {
+                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                        buttonComponent.onClick.AddListener(delegate
+                        {
 
-                    //         if (s.getManaCost() <= player.getCurrentMana())
-                    //         {
-                    //             selectedSpell = s;
-                    //             needInput = false;
-                    //         }
-                    //         else
-                    //         {
-                    //             flavortext.text = "Rowan does not have enough MANA to cast this spell.";
-                    //             textbox.SetActive(true);
-                    //         }
-                    //     });
+                            if (s.getManaCost() <= player.getCurrentMana())
+                            {
+                                selectedSpell = s;
+                                needInput = false;
+                            }
+                            else
+                            {
+                                flavortext.text = "Rowan does not have enough MANA to cast this spell.";
+                                textbox.SetActive(true);
+                            }
+                        });
 
-                    //     buttons.Add(newButton);
-                    //     mult++;
+                        buttons.Add(newButton);
+                        mult++;
 
-                    // }
+                    }
 
-                    // //Pauses game until attack is selected
-                    // while (needInput)
-                    // {
-                    //     yield return new WaitForSeconds(0.02f);
-                    // }
+                    //Pauses game until attack is selected
+                    while (needInput)
+                    {
+                        yield return new WaitForSeconds(0.02f);
+                    }
 
-                    // //Removes buttons
-                    // for (int i = buttons.Count - 1; i >= 0; i--)
-                    // {
-                    //     Destroy(buttons[i]);
-                    // }
+                    //Removes buttons
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
 
                     //Enemy select
-                    // if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
-                    // {
-                    //     //while enter not pressed
-                    //     int selectIndex = 0;
-                    //     GameObject arrowToEnemy = Instantiate(arrow);
-                    //     UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+                    if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
+                    {
+                        //while enter not pressed
+                        int selectIndex = 0;
+                        GameObject arrowToEnemy = Instantiate(arrow);
+                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
 
-                    //     bool selecting = true;
-                    //     arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
-                    //     while (selecting)
-                    //     {
+                        bool selecting = true;
+                        arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
+                        while (selecting)
+                        {
 
-                    //         if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
-                    //         {
-                    //             selectIndex--;
-                    //             if (selectIndex < 0)
-                    //             {
-                    //                 selectIndex = enemies.Count - 1;
-                    //             }
-                    //             else if (selectIndex >= enemies.Count)
-                    //             {
-                    //                 selectIndex = 0;
-                    //             }
-                    //             arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                    //         }
-                    //         else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
-                    //         {
-                    //             selectIndex++;
-                    //             if (selectIndex < 0)
-                    //             {
-                    //                 selectIndex = enemies.Count - 1;
-                    //             }
-                    //             else if (selectIndex >= enemies.Count)
-                    //             {
-                    //                 selectIndex = 0;
-                    //             }
-                    //             arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                    //         }
-                    //         else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
-                    //         {
-                    //             eSelected = enemies[selectIndex];
-                    //             selecting = false;
-                    //         }
-                    //         //DO LATER
-                    //         //return to previous menu
-                    //         else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
-                    //         {
-                    //             eSelected = enemies[selectIndex];
-                    //             selecting = false;
-                    //         }
-                    //         yield return null;
-                    //     }
+                            if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                            {
+                                selectIndex--;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                            }
+                            else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                            {
+                                selectIndex++;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                            }
+                            else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
+                            {
+                                eSelected = enemies[selectIndex];
+                                selecting = false;
+                            }
+                            //DO LATER
+                            //return to previous menu
+                            else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+                            {
+                                eSelected = enemies[selectIndex];
+                                selecting = false;
+                            }
+                            yield return null;
+                        }
 
-                    //     Destroy(arrowToEnemy);
-                    // }
-                    // //If only one enemy, don't bother running script
-                    // else
-                    // {
-                    //     eSelected = enemies[0];
-                    // }
+                        Destroy(arrowToEnemy);
+                    }
+                    //If only one enemy, don't bother running script
+                    else
+                    {
+                        eSelected = enemies[0];
+                    }
 
                     //Displays textbox saying what spell was chosen
                     selectedSpell.castSpell(player, eSelected);
