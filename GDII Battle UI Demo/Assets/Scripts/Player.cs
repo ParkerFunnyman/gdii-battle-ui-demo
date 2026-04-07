@@ -2,54 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System;
-
-public class Spell
-{
-    private string SpellName;
-    private int BasePower;
-    private string SpellType;
-
-    public Spell(string spellName, int basePower, string spellType)
-    {
-        SpellName = spellName;
-        BasePower = basePower;
-        SpellType = spellType.ToLower();
-    }
-
-    public string getSpellName()
-    {
-        return SpellName;
-    }
-
-    public void castSpell(Player p, Enemy e)
-    {
-        if (SpellType == "light"){
-            p.restoreHealth(BasePower);
-        }
-        else
-        {
-            if (SpellType == "melee")
-            {
-                p.playAnim("Slashing");
-            }
-            else
-            {
-                p.playAnim("Casting");
-            }
-            double damage = ((16 * BasePower * ( p.getAttack()/ e.getDefense())/50) + 2) * (UnityEngine.Random.Range(85, 101) / 100);
-            e.restoreHealth(-(int)damage);
-        }
-    }
-}
-
-public class Item
-{
-    private string ItemName;
-    public Item(string name)
-    {
-        ItemName = name;
-    }
-}
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -67,9 +20,51 @@ public class Player : MonoBehaviour
     public List<Spell> playerSpells = new List<Spell>();
     public List<Item> playerItems = new List<Item>();
 
+    private AudioSource playerAS;
+    [SerializeField] private AudioClip spellAudio;
+    [SerializeField] private AudioClip meleeAudio;
+    [SerializeField] private GameObject magicProjectile;
+
+    public GameObject getProjectile()
+    {
+        return magicProjectile;
+    }
+    public void playAudios(string input)
+    {
+        input = input.ToLower();
+        if (input == "melee")
+        {
+            playerAS.PlayOneShot(meleeAudio);
+        }
+        else if (input == "spell")
+        {
+            playerAS.PlayOneShot(spellAudio);
+        }
+    }
+
+    //plays ONLY spell audio with delay
+    public void playAudios(float delay)
+    {
+        playerAS.PlayDelayed(delay);
+    }
     public int getCurrentHP()
     {
         return currentHP;
+    }
+
+    public int getMaxHP()
+    {
+        return maxHP;
+    }
+
+    public int getCurrentMana()
+    {
+        return currentMana;
+    }
+
+    public int getMaxMana()
+    {
+        return maxMana;
     }
     public float getDefense()
     {
@@ -102,6 +97,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            currentMana -= manaUse;
             return true;
         }
     }
@@ -130,10 +126,12 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerSpells.Add(new Spell("Staff Attack", 40, "melee"));
-        playerSpells.Add(new Spell("Fireball", 80, "fire"));
-        playerSpells.Add(new Spell("Wind Blast", 80, "wind"));
-        playerSpells.Add(new Spell("Minor Restoration", 40, "light"));
+        playerAS = GetComponent<AudioSource>();
+
+        playerSpells.Add(new Spell("Staff Attack", 40, "melee", 0));
+        playerSpells.Add(new Spell("Fireball", 60, "fire", 10));
+        playerSpells.Add(new Spell("Wind Blast", 60, "wind", 10));
+        playerSpells.Add(new Spell("Lesser Restoration", 35, "light", 5));
     }
 
     // Update is called once per frame

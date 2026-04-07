@@ -38,7 +38,7 @@ public class EnemyAction
         {
             e.restoreHealth(BasePower);
         }
-        else if (Type == e.getName())
+        else if (Type == e.getType())
         {
             e.MagicAttack((int)(BasePower * 1.5));
         }
@@ -59,10 +59,29 @@ public class Enemy : MonoBehaviour
     private float baseDef = 50.0f;
     [SerializeField] private string attackType = "";
     public List<EnemyAction> actions = new List<EnemyAction>();
-    public Player player;
+    private Player player;
     [SerializeField] private Animator anim;
+    private AudioSource enemyAS;
+    public float audioDelay = 1.0f;
+    [SerializeField] private AudioClip spellAudio;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
+    public void setPlayer(Player p)
+    {
+        player = p;
+    }
+    public Vector3 getPosition()
+    {
+        return transform.position;
+    }
+    public void deathAnim()
+    {
+        anim.Play("Dead");
+    }
+
+    public void turnOff()
+    {
+    }
     public int getCurrentHP()
     {
         return currentHP;
@@ -86,14 +105,20 @@ public class Enemy : MonoBehaviour
         return enemyName;
     }
     public void restoreHealth(int healthGained)
-    {   
-        if (currentHP == maxHP)
+    {
+
+        if (healthGained < 0)
+        {
+            anim.Play("Pain");
+            currentHP += healthGained;
+        }
+        else if (currentHP == maxHP)
         {
             MagicAttack(10);
         }
         else
         {
-            anim.Play("Backflip");
+            anim.Play("Heal");
             currentHP += healthGained;
             if (currentHP > maxHP)
             {
@@ -104,8 +129,9 @@ public class Enemy : MonoBehaviour
     public void MagicAttack(int baseDamage)
     {
         //modified version of pokemon damage calc
+        enemyAS.PlayDelayed(audioDelay);
         anim.Play("Casting");
-        double damage = (16 * baseDamage * (baseAtk / player.getDefense())/50) + 2;
+        double damage = (16 * baseDamage * (baseAtk / player.getDefense()) / 50) + 2;
         player.takeDamage((int)damage);
         return;
     }
@@ -116,11 +142,17 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        currentHP = maxHP - 1;
-        anim.SetBool("attack", false);
-        anim.SetBool("healing", false);
+        enemyAS = GetComponent<AudioSource>();
+        currentHP = maxHP;
         attackType = attackType.ToLower();
-        actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
+        if (attackType == "fire")
+        {
+            actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
+        }
+        else if (attackType == "wind")
+        {
+            actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
+        }
         actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
     }
 
