@@ -34,6 +34,9 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     private StatusUI status;
 
+    private float buttonScale = 4/3;
+    private int gap = 125;
+
     public void addEnemy(Enemy e)
     {
         enemies.Add(e);
@@ -107,7 +110,7 @@ public class TurnManager : MonoBehaviour
                         currentState = TurnState.BattleWon;
                     }
 
-                    //Handle internal states of the PlayerTurn state
+                    // //Handle internal states of the PlayerTurn state
                     // while (PlayerTurnState != 4)
                     // {
                     //     switch (PlayerTurnState)
@@ -160,12 +163,12 @@ public class TurnManager : MonoBehaviour
 
                     //             }
 
-                    //             // //Removes buttons
-                    //             // for (int i = buttons.Count - 1; i >= 0; i--)
-                    //             // {
-                    //             //     Destroy(buttons[i]);
-                    //             // }
-                    //             // break;
+                    //         // //Removes buttons
+                    //         // for (int i = buttons.Count - 1; i >= 0; i--)
+                    //         // {
+                    //         //     Destroy(buttons[i]);
+                    //         // }
+                    //         // break;
 
                     //         case 1: //list spells
                     //             int mult2 = 0;
@@ -294,11 +297,12 @@ public class TurnManager : MonoBehaviour
                     //     }
                     // }
 
-                    //wait until spell is chosen
+                    // //wait until spell is chosen
 
                     //castSpell(eSelected, player)
 
-                    //Spawns a button for each spell in the player's spell array
+                    //Spawns a button for each spell in the player's spell array 
+                    int mult = 0;
                     for (int i = 0; i < player.playerSpells.Count; i++)
                     {
                         Spell s = player.playerSpells[i];
@@ -308,7 +312,7 @@ public class TurnManager : MonoBehaviour
 
                         newButton.transform.SetParent(canvas, false);
 
-                        float buttonY = rt.anchoredPosition.y - (mult * 90);
+                        float buttonY = rt.anchoredPosition.y - (mult * gap);
                         rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
