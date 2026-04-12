@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using System;
 using UnityEngine.Rendering;
+using System.Linq;
 
 public class Player : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour
     [SerializeField] private TextMeshProUGUI manaText;
 
     public List<Spell> playerSpells = new List<Spell>();
-    public List<Item> playerItems = new List<Item>();
+    public List<Item> playerItems = SceneManager.items;
 
     private AudioSource playerAS;
     [SerializeField] private AudioClip spellAudio;
@@ -127,11 +128,8 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerAS = GetComponent<AudioSource>();
-
         playerSpells.Add(new Spell("Staff Attack", 40, "melee", 0));
-        playerSpells.Add(new Spell("Fireball", 60, "fire", 10));
-        playerSpells.Add(new Spell("Wind Blast", 60, "wind", 10));
-        playerSpells.Add(new Spell("Lesser Restoration", 35, "light", 5));
+        playerSpells.AddRange(SceneManager.spells);
     }
 
     // Update is called once per frame
