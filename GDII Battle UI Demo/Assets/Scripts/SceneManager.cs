@@ -14,6 +14,8 @@ public class SceneManager : MonoBehaviour
     };
     public static List<Item> items = new List<Item>();
 
+    public bool is_field;
+
     void Start()
     {
         items.Add(new Item("The EVIL Eye of John Enemy"));
