@@ -127,9 +127,17 @@ public class TurnManager : MonoBehaviour
 
                     yield return StartCoroutine(PlayerTurns());
 
-                    //Displays textbox saying what spell was chosen
-                    selectedSpell.castSpell(player, eSelected);
-                    if (selectedSpell.getSpellType() == "light")
+
+                    if (selectedSpell != null)
+                    {
+                        selectedSpell.castSpell(player, eSelected);
+                    }
+
+                    if (selectedSpell == null)
+                    {
+                        //i should put something here
+                    }
+                    else if (selectedSpell.getSpellType() == "light")
                     {
                         flavortext.text = "Rowan used " + selectedSpell.getSpellName() + "!";
                     }
@@ -137,6 +145,7 @@ public class TurnManager : MonoBehaviour
                     {
                         flavortext.text = "Rowan used " + selectedSpell.getSpellName() + " on " + eSelected.getName() + "!";
                     }
+
                     textbox.SetActive(true);
                     yield return new WaitForSeconds(1.5f); //for testing
                     textbox.SetActive(false);
@@ -357,6 +366,7 @@ public class TurnManager : MonoBehaviour
                         yield return null;
                     }
 
+
                     //Removes buttons
                     for (int i = buttons.Count - 1; i >= 0; i--)
                     {
@@ -366,6 +376,49 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case PlayerTurnState.ListItems:
+                    mult = 0;
+                    for (int i = 0; i < SceneManager.items.Count; i++)
+                    {
+                        Item it = SceneManager.items[i];
+
+                        GameObject newButton = Instantiate(button);
+                        RectTransform rt = newButton.GetComponent<RectTransform>();
+
+                        newButton.transform.SetParent(canvas, false);
+
+                        float buttonY = rt.anchoredPosition.y - (mult * gap);
+                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+
+
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = it.getItemName();
+
+                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                        buttonComponent.onClick.AddListener(delegate
+                        {
+                            it.useItem(player);
+                            flavortext.text = "Rowan used a " + it.getItemName() + " on herself!";
+                            SceneManager.items.Remove(it);
+
+                            needInput = false;
+                        });
+
+                        buttons.Add(newButton);
+                        mult++;
+
+                    }
+
+                    //Pauses game until attack is selected
+                    while (needInput)
+                    {
+                        yield return null;
+                    }
+
+                    //Removes buttons
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
+                    playerTurnOver = true;
                     break;
 
                 case PlayerTurnState.EnemySelect:
