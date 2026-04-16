@@ -77,7 +77,6 @@ public class TurnManager : MonoBehaviour
     {
         status.SetHealth(player.getCurrentHP());
         status.SetMana(player.getCurrentMana());
-        Debug.Log(previousPlayerState);
     }
 
     IEnumerator Battle()
