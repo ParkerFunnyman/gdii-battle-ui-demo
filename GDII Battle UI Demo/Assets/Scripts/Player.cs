@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using UnityEngine.Rendering;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class Player : MonoBehaviour
 {
@@ -29,9 +30,44 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip meleeAudio;
     [SerializeField] private GameObject magicProjectile;
 
-    public GameObject getProjectile()
+    public void fireSpell(Enemy e, string type)
     {
-        return magicProjectile;
+        GameObject spellBall = Instantiate(magicProjectile);
+        Renderer rend = spellBall.GetComponent<Renderer>();
+        Transform enemyT = e.GetComponent<Transform>();
+        Transform playerT = GetComponent<Transform>();
+        spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y + 0.67f, playerT.position.z);
+        if (type == "fire")
+        {
+            rend.material.color = Color.orange;
+        }
+        else if (type == "ice")
+        {
+            rend.material.color = Color.lightBlue;
+        }
+        else if (type == "wind")
+        {
+            rend.material.color = Color.seaGreen;
+        }
+        else if (type == "thunder")
+        {
+            rend.material.color = Color.yellow;
+        }
+        else if (type == "earth")
+        {
+            rend.material.color = Color.saddleBrown;
+        }
+        else
+        {
+            rend.material.color = Color.black;
+        }
+        Vector3 direction = (enemyT.position - playerT.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
+            spellBall.transform.rotation = lookRotation;
+        }
+        //Destroy(spellBall);
     }
     public void playAudios(string input)
     {
@@ -128,6 +164,8 @@ public class Player : MonoBehaviour
 
     public void die()
     {
+        Transform playerT = GetComponent<Transform>();
+        playerT.position = new Vector3(playerT.position.x, 0.5f, -7.5f);
         anim.Play("Dead");
         //insert function to end battle, return to last save, delete player's system32, etc.
         return;

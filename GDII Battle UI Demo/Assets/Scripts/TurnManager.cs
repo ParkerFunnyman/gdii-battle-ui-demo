@@ -12,6 +12,7 @@ using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Runtime.CompilerServices;
 
 public class TurnManager : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class TurnManager : MonoBehaviour
 
     public static TurnState currentState;
     public static PlayerTurnState currentPlayerState;
+    public static PlayerTurnState previousPlayerState;
     private bool battleOver = false;
     private bool playerTurnOver = false;
     [SerializeField] private GameObject textbox;
@@ -48,8 +50,6 @@ public class TurnManager : MonoBehaviour
     private Spell selectedSpell = null;
     private Enemy eSelected;
     private List<GameObject> buttons = new List<GameObject>();
-
-    private float buttonScale = 4 / 3;
     private int gap = 125;
 
     public void addEnemy(Enemy e)
@@ -77,8 +77,8 @@ public class TurnManager : MonoBehaviour
     {
         status.SetHealth(player.getCurrentHP());
         status.SetMana(player.getCurrentMana());
+        Debug.Log(previousPlayerState);
     }
-
 
     IEnumerator Battle()
     {
@@ -261,6 +261,7 @@ public class TurnManager : MonoBehaviour
         }
         yield return null;
     }
+    
     IEnumerator PlayerTurns()
     {
         while (!playerTurnOver)
@@ -269,6 +270,7 @@ public class TurnManager : MonoBehaviour
             {
                 case PlayerTurnState.ListActions:
                     List<GameObject> actionButtons = new List<GameObject>();
+                    previousPlayerState = currentPlayerState;
 
                     //First button for staff attack
                     GameObject staffButton = Instantiate(button);
@@ -324,6 +326,8 @@ public class TurnManager : MonoBehaviour
                 case PlayerTurnState.ListSpells:
                     //Spawns a button for each spell in the player's spell array 
                     int mult = 0;
+                    needInput = true;
+                    previousPlayerState = PlayerTurnState.ListActions;
                     for (int i = 0; i < SceneManager.spells.Count; i++)
                     {
                         Spell s = SceneManager.spells[i];
@@ -363,6 +367,11 @@ public class TurnManager : MonoBehaviour
                     //Pauses game until attack is selected
                     while (needInput)
                     {
+                        if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+                        {
+                            needInput = false;
+                            currentPlayerState = previousPlayerState;
+                        }
                         yield return null;
                     }
 
@@ -372,14 +381,21 @@ public class TurnManager : MonoBehaviour
                     {
                         Destroy(buttons[i]);
                     }
-                    currentPlayerState = PlayerTurnState.EnemySelect;
+                    if (selectedSpell != null)
+                    {
+                        previousPlayerState = PlayerTurnState.ListSpells;
+                        currentPlayerState = PlayerTurnState.EnemySelect;
+                    }
                     break;
 
                 case PlayerTurnState.ListItems:
                     mult = 0;
-                    for (int i = 0; i < SceneManager.items.Count; i++)
+                    needInput = true;
+                    bool usedItem = false;
+                    previousPlayerState = PlayerTurnState.ListActions;
+                    for (int i = 0; i < SceneManager.items.Distinct().Count(); i++)
                     {
-                        Item it = SceneManager.items[i];
+                        Item it = SceneManager.items.Distinct().ElementAt(i);
 
                         GameObject newButton = Instantiate(button);
                         RectTransform rt = newButton.GetComponent<RectTransform>();
@@ -390,7 +406,7 @@ public class TurnManager : MonoBehaviour
                         rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
 
 
-                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = it.getItemName();
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = it.getItemName() + ": x" + SceneManager.items.Count(x => x.getItemName().Contains(it.getItemName()));
 
                         Button buttonComponent = newButton.GetComponentInChildren<Button>();
                         buttonComponent.onClick.AddListener(delegate
@@ -398,7 +414,7 @@ public class TurnManager : MonoBehaviour
                             it.useItem(player);
                             flavortext.text = "Rowan used a " + it.getItemName() + " on herself!";
                             SceneManager.items.Remove(it);
-
+                            usedItem = true;  // set it here
                             needInput = false;
                         });
 
@@ -410,55 +426,47 @@ public class TurnManager : MonoBehaviour
                     //Pauses game until attack is selected
                     while (needInput)
                     {
+                        if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+                        {
+                            needInput = false;
+                            currentPlayerState = previousPlayerState;
+                        }
                         yield return null;
                     }
 
-                    //Removes buttons
                     for (int i = buttons.Count - 1; i >= 0; i--)
                     {
                         Destroy(buttons[i]);
                     }
-                    playerTurnOver = true;
-                    break;
 
+                    if (usedItem)
+                    {
+                        playerTurnOver = true;
+                    }
+                    break;
                 case PlayerTurnState.EnemySelect:
-                    //Enemy select
                     if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
                     {
-                        //while enter not pressed
                         int selectIndex = 0;
                         GameObject arrowToEnemy = Instantiate(arrow);
                         UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
-
                         bool selecting = true;
+                        bool wentBack = false;  // track if backspace was pressed
                         arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
                         while (selecting)
                         {
-
                             if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
                             {
                                 selectIndex--;
-                                if (selectIndex < 0)
-                                {
-                                    selectIndex = enemies.Count - 1;
-                                }
-                                else if (selectIndex >= enemies.Count)
-                                {
-                                    selectIndex = 0;
-                                }
+                                if (selectIndex < 0) selectIndex = enemies.Count - 1;
+                                else if (selectIndex >= enemies.Count) selectIndex = 0;
                                 arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
                             else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
                             {
                                 selectIndex++;
-                                if (selectIndex < 0)
-                                {
-                                    selectIndex = enemies.Count - 1;
-                                }
-                                else if (selectIndex >= enemies.Count)
-                                {
-                                    selectIndex = 0;
-                                }
+                                if (selectIndex < 0) selectIndex = enemies.Count - 1;
+                                else if (selectIndex >= enemies.Count) selectIndex = 0;
                                 arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
                             else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
@@ -466,17 +474,17 @@ public class TurnManager : MonoBehaviour
                                 eSelected = enemies[selectIndex];
                                 selecting = false;
                             }
-                            //DO LATER
-                            //return to previous menu
                             else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                             {
-                                eSelected = enemies[selectIndex];
+                                currentPlayerState = previousPlayerState;
+                                wentBack = true;  // flag it
                                 selecting = false;
                             }
                             yield return null;
                         }
-
                         Destroy(arrowToEnemy);
+
+                        if (wentBack) break;  // exit the case without ending the turn
                     }
                     playerTurnOver = true;
                     break;

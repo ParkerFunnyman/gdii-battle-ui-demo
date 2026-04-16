@@ -17,8 +17,8 @@ public class SceneManager : MonoBehaviour
 
     void Start()
     {
-        Item potion = new Item("Potion", "hp", 25);
-        Item manaRestore = new Item("Mana Restore", "mana", 15);
+        Item potion = new Item("Potion", "hp", 50);
+        Item manaRestore = new Item("Elixir", "mana", 15);
 
         for (int i = 0; i < 3; i++)
         {
