@@ -7,6 +7,8 @@ using System.Linq;
 
 public class Player : MonoBehaviour
 {
+    private SceneManager scene;
+
     [SerializeField] private int maxHP = 120;
     private int currentHP = 120;
     [SerializeField] private int maxMana = 50;
@@ -135,28 +137,32 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Keeps HP values in reasonable range
-        if (currentHP > maxHP)
+        if(!scene.is_field)
         {
-            currentHP = maxHP;
-        }
-        else if (currentHP < 0)
-        {
-            currentHP = 0;
-        }
+            //Keeps HP values in reasonable range
+            if (currentHP > maxHP)
+            {
+                currentHP = maxHP;
+            }
+            else if (currentHP < 0)
+            {
+                currentHP = 0;
+            }
 
-        //Keeps Mana values in reasonable range
-        if (currentMana > maxMana)
-        {
-            currentMana = maxMana;
-        }
-        else if (currentMana < 0)
-        {
-            currentMana = 0;
-        }
+            //Keeps Mana values in reasonable range
+            if (currentMana > maxMana)
+            {
+                currentMana = maxMana;
+            }
+            else if (currentMana < 0)
+            {
+                currentMana = 0;
+            }
 
-        //Updates UI text
-        HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
-        manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
+            //Updates UI text
+            HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
+            manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
+            }
+
     }
 }

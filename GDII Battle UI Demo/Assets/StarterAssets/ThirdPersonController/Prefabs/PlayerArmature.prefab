@@ -1167,7 +1167,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 909d917d73a63f940ac158d02e936645, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicRigidBodyPush
   pushLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2404,7 +2404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8338988566280778634}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000046771462, y: -0.042312026, z: -1.9807689e-10, w: 0.9991045}
+  m_LocalRotation: {x: -0, y: 0.060176626, z: -0, w: -0.9981878}
   m_LocalPosition: {x: 0, y: 1.375, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
