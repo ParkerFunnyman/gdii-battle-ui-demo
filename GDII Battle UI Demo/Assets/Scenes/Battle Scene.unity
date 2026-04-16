@@ -1246,6 +1246,16 @@ MonoBehaviour:
   spellAudio: {fileID: 8300000, guid: 3ccfcd2244f6c504b82aab2c2a2a558d, type: 3}
   meleeAudio: {fileID: 8300000, guid: 7f0fa7c2a11da5c41b96cd144b98f551, type: 3}
   magicProjectile: {fileID: 2434398811326857207, guid: f3503e031c4743c449123009249f2402, type: 3}
+  fire: {fileID: 0}
+  fireParticle: {fileID: 0}
+  ice: {fileID: 0}
+  iceParticle: {fileID: 0}
+  wind: {fileID: 0}
+  windParticle: {fileID: 0}
+  thunder: {fileID: 0}
+  thunderParticle: {fileID: 0}
+  earth: {fileID: 0}
+  earthParticle: {fileID: 0}
 --- !u!82 &899245197
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3870,6 +3880,16 @@ MonoBehaviour:
   spellAudio: {fileID: 8300000, guid: 3ccfcd2244f6c504b82aab2c2a2a558d, type: 3}
   meleeAudio: {fileID: 8300000, guid: 7f0fa7c2a11da5c41b96cd144b98f551, type: 3}
   magicProjectile: {fileID: 2434398811326857207, guid: f3503e031c4743c449123009249f2402, type: 3}
+  fire: {fileID: 2100000, guid: 4f2704a09a869964a9f9224ee141286b, type: 2}
+  fireParticle: {fileID: 2100000, guid: 14a2dee432518b744923e2c898f6a6aa, type: 2}
+  ice: {fileID: 2100000, guid: b146d88344b42b942bb0ff50356da503, type: 2}
+  iceParticle: {fileID: 2100000, guid: b53b2d6319fa52d44a67851c4aee3c6e, type: 2}
+  wind: {fileID: 0}
+  windParticle: {fileID: 0}
+  thunder: {fileID: 0}
+  thunderParticle: {fileID: 0}
+  earth: {fileID: 2100000, guid: 07d1708a07858ea4bb01b4e6c8ce8954, type: 2}
+  earthParticle: {fileID: 2100000, guid: dff20f08745f905469daa9dace7486ed, type: 2}
 --- !u!1 &986756709178918230
 GameObject:
   m_ObjectHideFlags: 0

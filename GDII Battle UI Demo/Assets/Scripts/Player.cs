@@ -31,6 +31,19 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip meleeAudio;
     [SerializeField] private GameObject magicProjectile;
 
+    [Header("Spell Materials")]
+    [SerializeField] private Material fire;
+    [SerializeField] private Material fireParticle;
+    [SerializeField] private Material ice;
+    [SerializeField] private Material iceParticle;
+    [SerializeField] private Material wind;
+    [SerializeField] private Material windParticle;
+    [SerializeField] private Material thunder;
+    [SerializeField] private Material thunderParticle;
+    [SerializeField] private Material earth;
+    [SerializeField] private Material earthParticle;
+
+
     public void fireSpell(Enemy e, string type)
     {
         StartCoroutine(wait(0.5f, type, e));
@@ -178,16 +191,19 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(time);
         GameObject spellBall = Instantiate(magicProjectile);
         Renderer rend = spellBall.GetComponent<Renderer>();
+        ParticleSystemRenderer PSrend = spellBall.GetComponent<ParticleSystemRenderer>();
         Transform enemyT = e.GetComponent<Transform>();
         Transform playerT = GetComponent<Transform>();
         spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y + 0.67f, playerT.position.z);
         if (type == "fire")
         {
-            rend.material.color = Color.orange;
+            rend.material = fire;
+            PSrend.material = fireParticle;
         }
         else if (type == "ice")
         {
-            rend.material.color = Color.lightBlue;
+            rend.material = ice;
+            PSrend.material = iceParticle;
         }
         else if (type == "wind")
         {
@@ -199,7 +215,8 @@ public class Player : MonoBehaviour
         }
         else if (type == "earth")
         {
-            rend.material.color = Color.saddleBrown;
+            rend.material = earth;
+            PSrend.material = earthParticle;
         }
         else
         {
