@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System;
+using System.Collections;
 using UnityEngine.Rendering;
 using System.Linq;
 
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
 {
     private SceneManager scene;
 
+    [Header("Player Attributes")]
     [SerializeField] private int maxHP = 120;
     private int currentHP = 120;
     [SerializeField] private int maxMana = 50;
@@ -16,13 +18,14 @@ public class Player : MonoBehaviour
     private float baseAtk = 50.0f;
     private float baseDef = 50.0f;
 
-    [SerializeField] private Animator anim;
-    [SerializeField] private TextMeshProUGUI HPText;
-    [SerializeField] private TextMeshProUGUI manaText;
-
+    [Header("Player Inventory")]
     public List<Spell> playerSpells = new List<Spell>();
     public List<Item> playerItems = SceneManager.items;
 
+    [Header("Player GameObjects")]
+    [SerializeField] private Animator anim;
+    [SerializeField] private TextMeshProUGUI HPText;
+    [SerializeField] private TextMeshProUGUI manaText;
     private AudioSource playerAS;
     [SerializeField] private AudioClip spellAudio;
     [SerializeField] private AudioClip meleeAudio;
@@ -80,9 +83,14 @@ public class Player : MonoBehaviour
     }
     public void takeDamage(int damageDealt)
     {
+        StartCoroutine(HurtAnim(1.0f));
         currentHP -= damageDealt;
     }
-
+    IEnumerator HurtAnim(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        anim.Play("Hurt");
+    }
     public void restoreHealth(int healthGained)
     {
         currentHP += healthGained;

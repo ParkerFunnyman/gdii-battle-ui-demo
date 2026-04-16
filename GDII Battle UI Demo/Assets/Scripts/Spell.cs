@@ -33,9 +33,10 @@ public class Spell
 
     public void castSpell(Player p, Enemy e)
     {
+        //Rotate player to enemy they're casting at
         Transform playerT = p.GetComponent<Transform>();
         Transform enemyT = e.GetComponent<Transform>();
-        Vector3 direction = -(enemyT.position - playerT.position).normalized;
+        Vector3 direction = (enemyT.position - playerT.position).normalized;
         if (direction != Vector3.zero) // Avoid errors if positions are identical
         {
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));

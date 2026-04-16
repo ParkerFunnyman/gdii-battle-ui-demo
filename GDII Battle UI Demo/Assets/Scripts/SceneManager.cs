@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SceneManager : MonoBehaviour
 {
+    public static int totalXP = 0;
     public static List<Spell> spells = new List<Spell>{
         new Spell("Fireball", 60, "fire", 10),
         new Spell("Glacial Freeze", 60, "ice", 10), 
@@ -18,6 +19,18 @@ public class SceneManager : MonoBehaviour
 
     void Start()
     {
-        items.Add(new Item("The EVIL Eye of John Enemy"));
+        Item potion = new Item("Potion", "hp", 25);
+        Item manaRestore = new Item("Mana Restore", "mana", 15);
+
+        for (int i = 0; i < 3; i++)
+        {
+            items.Add(potion);
+        }
+        for (int i = 0; i < 2; i++)
+        {
+            items.Add(manaRestore);
+        }
+
+
     }
 }
