@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using SceneChanger = UnityEngine.SceneManagement;
 
 public class SceneManager : MonoBehaviour
 {
+    private static SceneManager instance;
     public static int totalXP = 0;
     public static List<Spell> spells = new List<Spell>{
         new Spell("Fireball", 60, "fire", 10),
@@ -15,10 +17,21 @@ public class SceneManager : MonoBehaviour
     };
     public static List<Item> items = new List<Item>();
 
-    public bool is_field;
+    public static Vector3 playerPos;
+    public static bool restorePos = false;
+
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        if (instance == null) {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        } else {
+            Destroy(gameObject); // Destroy duplicate
+        }
+
         Item potion = new Item("Potion", "hp", 25);
         Item manaRestore = new Item("Mana Restore", "mana", 15);
 
@@ -31,6 +44,17 @@ public class SceneManager : MonoBehaviour
             items.Add(manaRestore);
         }
 
+    }
 
+    public static void BattleTransition(Vector3 currentPos)
+    {
+        playerPos = currentPos;
+        SceneChanger.SceneManager.LoadScene("Battle Scene");
+    }
+
+        public static void FieldTransition()
+    {
+        restorePos = true;
+        SceneChanger.SceneManager.LoadScene("MainScene");
     }
 }

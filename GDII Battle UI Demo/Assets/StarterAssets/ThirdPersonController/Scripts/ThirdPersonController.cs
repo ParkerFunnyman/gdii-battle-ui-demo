@@ -37,7 +37,7 @@ namespace StarterAssets
 
         [Space(10)]
         [Tooltip("The height the player can jump")]
-        public float JumpHeight = 1.2f;
+        public float JumpHeight = 0f;
 
         [Tooltip("The character uses its own gravity value. The engine default is -9.81f")]
         public float Gravity = -15.0f;
@@ -286,40 +286,40 @@ namespace StarterAssets
         {
             if (Grounded)
             {
-                // reset the fall timeout timer
-                _fallTimeoutDelta = FallTimeout;
+                // // reset the fall timeout timer
+                // _fallTimeoutDelta = FallTimeout;
 
-                // update animator if using character
-                if (_hasAnimator)
-                {
-                    _animator.SetBool(_animIDJump, false);
-                    _animator.SetBool(_animIDFreeFall, false);
-                }
+                // // update animator if using character
+                // if (_hasAnimator)
+                // {
+                //     _animator.SetBool(_animIDJump, false);
+                //     _animator.SetBool(_animIDFreeFall, false);
+                // }
 
-                // stop our velocity dropping infinitely when grounded
-                if (_verticalVelocity < 0.0f)
-                {
-                    _verticalVelocity = -2f;
-                }
+                // // stop our velocity dropping infinitely when grounded
+                // if (_verticalVelocity < 0.0f)
+                // {
+                //     _verticalVelocity = -2f;
+                // }
 
-                // Jump
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
-                {
-                    // the square root of H * -2 * G = how much velocity needed to reach desired height
-                    _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
+                // // Jump
+                // if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                // {
+                //     // the square root of H * -2 * G = how much velocity needed to reach desired height
+                //     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);
 
-                    // update animator if using character
-                    if (_hasAnimator)
-                    {
-                        _animator.SetBool(_animIDJump, true);
-                    }
-                }
+                //     // update animator if using character
+                //     if (_hasAnimator)
+                //     {
+                //         _animator.SetBool(_animIDJump, true);
+                //     }
+                // }
 
-                // jump timeout
-                if (_jumpTimeoutDelta >= 0.0f)
-                {
-                    _jumpTimeoutDelta -= Time.deltaTime;
-                }
+                // // jump timeout
+                // if (_jumpTimeoutDelta >= 0.0f)
+                // {
+                //     _jumpTimeoutDelta -= Time.deltaTime;
+                // }
             }
             else
             {

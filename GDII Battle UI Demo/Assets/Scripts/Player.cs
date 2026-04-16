@@ -5,11 +5,10 @@ using System;
 using System.Collections;
 using UnityEngine.Rendering;
 using System.Linq;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private SceneManager scene;
-
     [Header("Player Attributes")]
     [SerializeField] private int maxHP = 120;
     private int currentHP = 120;
@@ -145,8 +144,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!scene.is_field)
-        {
             //Keeps HP values in reasonable range
             if (currentHP > maxHP)
             {
@@ -170,7 +167,8 @@ public class Player : MonoBehaviour
             //Updates UI text
             HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
             manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
-            }
-
     }
 }
+
+
+
