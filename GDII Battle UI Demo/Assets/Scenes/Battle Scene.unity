@@ -3885,9 +3885,9 @@ MonoBehaviour:
   ice: {fileID: 2100000, guid: b146d88344b42b942bb0ff50356da503, type: 2}
   iceParticle: {fileID: 2100000, guid: b53b2d6319fa52d44a67851c4aee3c6e, type: 2}
   wind: {fileID: 0}
-  windParticle: {fileID: 0}
+  windParticle: {fileID: 2100000, guid: 82516c31a14f52f4c991df5093eaf51a, type: 2}
   thunder: {fileID: 0}
-  thunderParticle: {fileID: 0}
+  thunderParticle: {fileID: 2100000, guid: 116f59ec5b00c26478b3664473b0c004, type: 2}
   earth: {fileID: 2100000, guid: 07d1708a07858ea4bb01b4e6c8ce8954, type: 2}
   earthParticle: {fileID: 2100000, guid: dff20f08745f905469daa9dace7486ed, type: 2}
 --- !u!1 &986756709178918230

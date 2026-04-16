@@ -208,10 +208,12 @@ public class Player : MonoBehaviour
         else if (type == "wind")
         {
             rend.material.color = Color.seaGreen;
+            PSrend.material = windParticle;
         }
         else if (type == "thunder")
         {
             rend.material.color = Color.yellow;
+            PSrend.material = thunderParticle;
         }
         else if (type == "earth")
         {
