@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6819575264668174646}
   - component: {fileID: 1554161538625802746}
   - component: {fileID: 2324892240423391211}
-  - component: {fileID: 4829926092374413408}
-  - component: {fileID: 2843950643604580219}
   - component: {fileID: 956886095383000661}
+  - component: {fileID: 9127840929150404907}
+  - component: {fileID: 4651876075032585814}
   m_Layer: 0
   m_Name: Magic Orb
   m_TagString: Untagged
@@ -115,7 +115,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!198 &4829926092374413408
+--- !u!114 &956886095383000661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2434398811326857207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e632b4648d745524d941a5702f6e1b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  speed: 4
+--- !u!198 &9127840929150404907
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,8 +136,8 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2434398811326857207}
   serializedVersion: 8
-  lengthInSec: 5
-  simulationSpeed: 1
+  lengthInSec: 2
+  simulationSpeed: 5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -369,7 +382,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -686,7 +699,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0
     gravitySource: 0
-    maxNumParticles: 1000
+    maxNumParticles: 25
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 0
     rotation3D: 0
@@ -4838,7 +4851,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &2843950643604580219
+--- !u!199 &4651876075032585814
 ParticleSystemRenderer:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -4918,16 +4931,3 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
---- !u!114 &956886095383000661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2434398811326857207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e632b4648d745524d941a5702f6e1b90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  speed: 20

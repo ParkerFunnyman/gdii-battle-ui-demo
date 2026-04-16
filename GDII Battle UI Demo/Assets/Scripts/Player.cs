@@ -6,6 +6,8 @@ using System.Collections;
 using UnityEngine.Rendering;
 using System.Linq;
 using UnityEngine.UI;
+using Unity.VisualScripting;
+using System.Diagnostics.CodeAnalysis;
 
 public class Player : MonoBehaviour
 {
@@ -30,9 +32,23 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip meleeAudio;
     [SerializeField] private GameObject magicProjectile;
 
-    public GameObject getProjectile()
+    [Header("Spell Materials")]
+    [SerializeField] private Material fire;
+    [SerializeField] private Material fireParticle;
+    [SerializeField] private Material ice;
+    [SerializeField] private Material iceParticle;
+    [SerializeField] private Material wind;
+    [SerializeField] private Material windParticle;
+    [SerializeField] private Material thunder;
+    [SerializeField] private Material thunderParticle;
+    [SerializeField] private Material earth;
+    [SerializeField] private Material earthParticle;
+
+
+    public void fireSpell(Enemy e, string type)
     {
-        return magicProjectile;
+        StartCoroutine(wait(0.5f, type, e));
+
     }
     public void playAudios(string input)
     {
@@ -129,6 +145,8 @@ public class Player : MonoBehaviour
 
     public void die()
     {
+        Transform playerT = GetComponent<Transform>();
+        playerT.position = new Vector3(playerT.position.x, 0.5f, -7.5f);
         anim.Play("Dead");
         //insert function to end battle, return to last save, delete player's system32, etc.
         return;
@@ -167,6 +185,54 @@ public class Player : MonoBehaviour
             //Updates UI text
             HPText.text = "HP: " + currentHP.ToString() + " / " + maxHP.ToString();
             manaText.text = "Mana: " + currentMana.ToString() + " / " + maxMana.ToString();
+    }
+
+    IEnumerator wait(float time, string type, Enemy e)
+    {
+        yield return new WaitForSeconds(time);
+        GameObject spellBall = Instantiate(magicProjectile);
+        Renderer rend = spellBall.GetComponent<Renderer>();
+        ParticleSystemRenderer PSrend = spellBall.GetComponent<ParticleSystemRenderer>();
+        Transform enemyT = e.GetComponent<Transform>();
+        Transform playerT = GetComponent<Transform>();
+        spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y + 0.67f, playerT.position.z);
+        if (type == "fire")
+        {
+            rend.material = fire;
+            PSrend.material = fireParticle;
+        }
+        else if (type == "ice")
+        {
+            rend.material = ice;
+            PSrend.material = iceParticle;
+        }
+        else if (type == "wind")
+        {
+            rend.material.color = Color.seaGreen;
+            PSrend.material = windParticle;
+        }
+        else if (type == "thunder")
+        {
+            rend.material.color = Color.yellow;
+            PSrend.material = thunderParticle;
+        }
+        else if (type == "earth")
+        {
+            rend.material = earth;
+            PSrend.material = earthParticle;
+        }
+        else
+        {
+            rend.material.color = Color.black;
+        }
+        Vector3 direction = (enemyT.position - playerT.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, -0.13f, direction.z));
+            spellBall.transform.rotation = lookRotation;
+        }
+        yield return new WaitForSeconds(1);
+        Destroy(spellBall );
     }
 }
 

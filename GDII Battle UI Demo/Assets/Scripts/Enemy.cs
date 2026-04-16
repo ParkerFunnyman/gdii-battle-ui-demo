@@ -64,7 +64,6 @@ public class Enemy : MonoBehaviour
     private AudioSource enemyAS;
     public float audioDelay = 1.0f;
     [SerializeField] private AudioClip spellAudio;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public void setPlayer(Player p)
     {
@@ -147,13 +146,14 @@ public class Enemy : MonoBehaviour
         attackType = attackType.ToLower();
         if (attackType == "fire")
         {
-            actions.Add(new EnemyAction("Hot Moves", 30, "fire"));
+            actions.Add(new EnemyAction("Heat Burst", 40, "fire"));
+            actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
         }
         else if (attackType == "wind")
         {
             actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
+            actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
         }
-        actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
     }
 
     // Update is called once per frame

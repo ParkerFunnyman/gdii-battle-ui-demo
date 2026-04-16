@@ -42,6 +42,8 @@ public class Spell
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
             playerT.rotation = lookRotation;
         }
+
+
         if (SpellType == "melee")
         {
             p.playAudios("melee");
@@ -54,7 +56,7 @@ public class Spell
         {
             if (p.useMana(ManaCost))
             {
-                
+
                 p.playAudios(0.2f);
                 if (SpellType == "light")
                 {
@@ -64,6 +66,7 @@ public class Spell
                 else
                 {
                     p.playAnim("Casting");
+                    p.fireSpell(e, SpellType);
                     //summon magic ball
                     double damage = (16 * BasePower * (p.getAttack() / e.getDefense()) / 50.0) + 2;
                     //Debug.Log(damage + "  " + (-(int)damage) + "  " + e.getCurrentHP());
