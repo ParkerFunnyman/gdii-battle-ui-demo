@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
@@ -23,8 +24,18 @@ public class TurnManager : MonoBehaviour
         BattleLost
     }
 
+    public enum PlayerTurnState
+    {
+        ListActions,
+        ListSpells,
+        ListItems,
+        EnemySelect
+    }
+
     public static TurnState currentState;
+    public static PlayerTurnState currentPlayerState;
     private bool battleOver = false;
+    private bool playerTurnOver = false;
     [SerializeField] private GameObject textbox;
     [SerializeField] private Transform canvas;
     [SerializeField] private TextMeshProUGUI flavortext;
@@ -33,8 +44,12 @@ public class TurnManager : MonoBehaviour
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     private StatusUI status;
+    private bool needInput = true;
+    private Spell selectedSpell = null;
+    private Enemy eSelected;
+    private List<GameObject> buttons = new List<GameObject>();
 
-    private float buttonScale = 4/3;
+    private float buttonScale = 4 / 3;
     private int gap = 125;
 
     public void addEnemy(Enemy e)
@@ -98,129 +113,19 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case TurnState.PlayerTurn:
-                    List<GameObject> buttons = new List<GameObject>();
-                    bool needInput = true;
-                    Spell selectedSpell = null;
-                    Enemy eSelected = enemies[0]; //enemy player selects
-
-                    //redudant check for if an enemy has a self destruct spell or something
-                    if ((enemies.Count <= 0) && (player.getCurrentHP() > 0))
+                    if (enemies.Count <= 0 && player.getCurrentHP() > 0)
                     {
                         currentState = TurnState.BattleWon;
+                        break;
                     }
 
+                    playerTurnOver = false;
+                    needInput = true;
+                    selectedSpell = null;
+                    eSelected = enemies[0];
+                    currentPlayerState = PlayerTurnState.ListActions;
 
-                    //Spawns a button for each spell in the player's spell array 
-                    int mult = 0;
-                    for (int i = 0; i < SceneManager.spells.Count; i++)
-                    {
-                        Spell s = SceneManager.spells[i];
-
-                        GameObject newButton = Instantiate(button);
-                        RectTransform rt = newButton.GetComponent<RectTransform>();
-
-                        newButton.transform.SetParent(canvas, false);
-
-                        float buttonY = rt.anchoredPosition.y - (mult * gap);
-                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
-
-
-                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
-
-                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
-                        buttonComponent.onClick.AddListener(delegate
-                        {
-
-                            if (s.getManaCost() <= player.getCurrentMana())
-                            {
-                                selectedSpell = s;
-                                needInput = false;
-                            }
-                            else
-                            {
-                                flavortext.text = "Rowan does not have enough MANA to cast this spell.";
-                                textbox.SetActive(true);
-                            }
-                        });
-
-                        buttons.Add(newButton);
-                        mult++;
-
-                    }
-
-                    //Pauses game until attack is selected
-                    while (needInput)
-                    {
-                        yield return new WaitForSeconds(0.02f);
-                    }
-
-                    //Removes buttons
-                    for (int i = buttons.Count - 1; i >= 0; i--)
-                    {
-                        Destroy(buttons[i]);
-                    }
-
-                    //Enemy select
-                    if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
-                    {
-                        //while enter not pressed
-                        int selectIndex = 0;
-                        GameObject arrowToEnemy = Instantiate(arrow);
-                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
-
-                        bool selecting = true;
-                        arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
-                        while (selecting)
-                        {
-
-                            if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
-                            {
-                                selectIndex--;
-                                if (selectIndex < 0)
-                                {
-                                    selectIndex = enemies.Count - 1;
-                                }
-                                else if (selectIndex >= enemies.Count)
-                                {
-                                    selectIndex = 0;
-                                }
-                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                            }
-                            else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
-                            {
-                                selectIndex++;
-                                if (selectIndex < 0)
-                                {
-                                    selectIndex = enemies.Count - 1;
-                                }
-                                else if (selectIndex >= enemies.Count)
-                                {
-                                    selectIndex = 0;
-                                }
-                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
-                            }
-                            else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
-                            {
-                                eSelected = enemies[selectIndex];
-                                selecting = false;
-                            }
-                            //DO LATER
-                            //return to previous menu
-                            else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
-                            {
-                                eSelected = enemies[selectIndex];
-                                selecting = false;
-                            }
-                            yield return null;
-                        }
-
-                        Destroy(arrowToEnemy);
-                    }
-                    //If only one enemy, don't bother running script
-                    else
-                    {
-                        eSelected = enemies[0];
-                    }
+                    yield return StartCoroutine(PlayerTurns());
 
                     //Displays textbox saying what spell was chosen
                     selectedSpell.castSpell(player, eSelected);
@@ -321,6 +226,7 @@ public class TurnManager : MonoBehaviour
                     textbox.SetActive(false);
                     battleOver = true;
                     //gain xp
+                    //SceneManager.LoadScene(sceneName);
                     //go back to dungeon scrawling
                     break;
 
@@ -341,6 +247,188 @@ public class TurnManager : MonoBehaviour
                     flavortext.text = "Erm, you aren't supposed to see this! How embarrasing!";
                     Debug.Log("How did we get here.");
                     currentState = TurnState.BattleStart;
+                    break;
+            }
+        }
+        yield return null;
+    }
+    IEnumerator PlayerTurns()
+    {
+        while (!playerTurnOver)
+        {
+            switch (currentPlayerState)
+            {
+                case PlayerTurnState.ListActions:
+                    List<GameObject> actionButtons = new List<GameObject>();
+
+                    //First button for staff attack
+                    GameObject staffButton = Instantiate(button);
+                    RectTransform SB = staffButton.GetComponent<RectTransform>();
+                    staffButton.transform.SetParent(canvas, false);
+                    SB.anchoredPosition = new UnityEngine.Vector2(704.50f, SB.anchoredPosition.y);
+                    staffButton.GetComponentInChildren<TextMeshProUGUI>().text = "Staff Attack";
+                    Button SBcomponent = staffButton.GetComponentInChildren<Button>();
+                    SBcomponent.onClick.AddListener(delegate
+                    {
+                        selectedSpell = player.playerSpells[0];
+                        currentPlayerState = PlayerTurnState.EnemySelect;
+                    });
+                    actionButtons.Add(staffButton);
+
+                    //Second button for spell list
+                    GameObject spellButton = Instantiate(button);
+                    RectTransform SpellB = spellButton.GetComponent<RectTransform>();
+                    spellButton.transform.SetParent(canvas, false);
+                    SpellB.anchoredPosition = new UnityEngine.Vector2(704.50f, SpellB.anchoredPosition.y - gap);
+                    spellButton.GetComponentInChildren<TextMeshProUGUI>().text = "Spells";
+                    Button SpellBcomponent = spellButton.GetComponentInChildren<Button>();
+                    SpellBcomponent.onClick.AddListener(delegate
+                    {
+                        currentPlayerState = PlayerTurnState.ListSpells;
+                    });
+                    actionButtons.Add(spellButton);
+
+                    //Third button for item list
+                    GameObject itemButton = Instantiate(button);
+                    RectTransform IB = itemButton.GetComponent<RectTransform>();
+                    itemButton.transform.SetParent(canvas, false);
+                    IB.anchoredPosition = new UnityEngine.Vector2(704.50f, IB.anchoredPosition.y - (2 * gap));
+                    itemButton.GetComponentInChildren<TextMeshProUGUI>().text = "Items";
+                    Button IBcomponent = itemButton.GetComponentInChildren<Button>();
+                    IBcomponent.onClick.AddListener(delegate
+                    {
+                        currentPlayerState = PlayerTurnState.ListItems;
+                    });
+                    actionButtons.Add(itemButton);
+
+                    while (currentPlayerState == PlayerTurnState.ListActions)
+                    {
+                        yield return null;
+                    }
+
+                    for (int i = actionButtons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(actionButtons[i]);
+                    }
+                    break;
+
+                case PlayerTurnState.ListSpells:
+                    //Spawns a button for each spell in the player's spell array 
+                    int mult = 0;
+                    for (int i = 0; i < SceneManager.spells.Count; i++)
+                    {
+                        Spell s = SceneManager.spells[i];
+
+                        GameObject newButton = Instantiate(button);
+                        RectTransform rt = newButton.GetComponent<RectTransform>();
+
+                        newButton.transform.SetParent(canvas, false);
+
+                        float buttonY = rt.anchoredPosition.y - (mult * gap);
+                        rt.anchoredPosition = new UnityEngine.Vector2(704.50f, buttonY);
+
+
+                        newButton.GetComponentInChildren<TextMeshProUGUI>().text = s.getSpellName();
+
+                        Button buttonComponent = newButton.GetComponentInChildren<Button>();
+                        buttonComponent.onClick.AddListener(delegate
+                        {
+
+                            if (s.getManaCost() <= player.getCurrentMana())
+                            {
+                                selectedSpell = s;
+                                needInput = false;
+                            }
+                            else
+                            {
+                                flavortext.text = "Rowan does not have enough MANA to cast this spell.";
+                                textbox.SetActive(true);
+                            }
+                        });
+
+                        buttons.Add(newButton);
+                        mult++;
+
+                    }
+
+                    //Pauses game until attack is selected
+                    while (needInput)
+                    {
+                        yield return null;
+                    }
+
+                    //Removes buttons
+                    for (int i = buttons.Count - 1; i >= 0; i--)
+                    {
+                        Destroy(buttons[i]);
+                    }
+                    currentPlayerState = PlayerTurnState.EnemySelect;
+                    break;
+
+                case PlayerTurnState.ListItems:
+                    break;
+
+                case PlayerTurnState.EnemySelect:
+                    //Enemy select
+                    if (enemies.Count > 1 && selectedSpell.getSpellType() != "light")
+                    {
+                        //while enter not pressed
+                        int selectIndex = 0;
+                        GameObject arrowToEnemy = Instantiate(arrow);
+                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+
+                        bool selecting = true;
+                        arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
+                        while (selecting)
+                        {
+
+                            if (Keyboard.current.aKey.wasPressedThisFrame || Keyboard.current.leftArrowKey.wasPressedThisFrame)
+                            {
+                                selectIndex--;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                            }
+                            else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
+                            {
+                                selectIndex++;
+                                if (selectIndex < 0)
+                                {
+                                    selectIndex = enemies.Count - 1;
+                                }
+                                else if (selectIndex >= enemies.Count)
+                                {
+                                    selectIndex = 0;
+                                }
+                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
+                            }
+                            else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
+                            {
+                                eSelected = enemies[selectIndex];
+                                selecting = false;
+                            }
+                            //DO LATER
+                            //return to previous menu
+                            else if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+                            {
+                                eSelected = enemies[selectIndex];
+                                selecting = false;
+                            }
+                            yield return null;
+                        }
+
+                        Destroy(arrowToEnemy);
+                    }
+                    playerTurnOver = true;
+                    break;
+                default:
+                    currentPlayerState = PlayerTurnState.ListActions;
                     break;
             }
         }

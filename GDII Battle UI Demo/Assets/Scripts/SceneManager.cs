@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SceneManager : MonoBehaviour
 {
+    public static int totalXP = 0;
     public static List<Spell> spells = new List<Spell>{
         new Spell("Fireball", 60, "fire", 10),
         new Spell("Glacial Freeze", 60, "ice", 10), 
