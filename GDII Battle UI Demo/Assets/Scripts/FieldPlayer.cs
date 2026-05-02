@@ -39,6 +39,9 @@ public class FieldPlayer : MonoBehaviour
         {
             transform.position = SceneManager.playerPos;
         }
+
+        current_menu_state = menu_state.main;
+        StartCoroutine(spellcast());
     }
 
     // Update is called once per frame
@@ -48,15 +51,15 @@ public class FieldPlayer : MonoBehaviour
         bool isWalking = horizontalVelocity.magnitude > 0.1f;
         if (isWalking)
         {
-            if (steps != 1000)
+            if (steps != 2000)
             {
                 Debug.Log(steps);
                 steps++;
                 return;
             }
 
-            int rand = Random.Range(0, 100);
-            if (rand > 95)
+            int rand = Random.Range(0, 1000);
+            if (rand > 998)
             {
                 steps = 0;
                 SceneManager.BattleTransition(transform.position);
