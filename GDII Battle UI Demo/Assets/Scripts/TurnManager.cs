@@ -43,6 +43,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI flavortext;
     [SerializeField] private GameObject button;
     [SerializeField] private GameObject arrow;
+    [SerializeField] private GameObject arrowUI;
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     private StatusUI status;
@@ -268,6 +269,9 @@ public class TurnManager : MonoBehaviour
             switch (currentPlayerState)
             {
                 case PlayerTurnState.ListActions:
+                    int buttonSelect = 0;
+                    GameObject arrowSelector = Instantiate(arrowUI);
+
                     List<GameObject> actionButtons = new List<GameObject>();
                     previousPlayerState = currentPlayerState;
 
@@ -310,6 +314,11 @@ public class TurnManager : MonoBehaviour
                         currentPlayerState = PlayerTurnState.ListItems;
                     });
                     actionButtons.Add(itemButton);
+
+                    //while (not selected)
+                        //if up
+                        //if down
+                        //if enter
 
                     while (currentPlayerState == PlayerTurnState.ListActions)
                     {
@@ -371,6 +380,9 @@ public class TurnManager : MonoBehaviour
                             needInput = false;
                             currentPlayerState = previousPlayerState;
                         }
+                        //if up
+                        //if down
+                        //if enter
                         yield return null;
                     }
 
@@ -429,6 +441,9 @@ public class TurnManager : MonoBehaviour
                         {
                             needInput = false;
                             currentPlayerState = previousPlayerState;
+                            //if up
+                            //if down
+                            //if enter
                         }
                         yield return null;
                     }

@@ -1095,6 +1095,7 @@ MonoBehaviour:
   flavortext: {fileID: 1698139577}
   button: {fileID: 5493637552692478511, guid: f3f566441b61e0e428d722c1ccd7ec2c, type: 3}
   arrow: {fileID: 6536669425583897009, guid: e826a3d3d3650e5489e2534bf72ee9eb, type: 3}
+  arrowUI: {fileID: 1360517695728609740, guid: 8184b30aa5372ef41a713ebe45985981, type: 3}
   player: {fileID: 919132149326449188}
   enemies:
   - {fileID: 1357810832}
