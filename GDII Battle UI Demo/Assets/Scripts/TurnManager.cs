@@ -43,6 +43,7 @@ public class TurnManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI flavortext;
     [SerializeField] private GameObject button;
     [SerializeField] private GameObject arrow;
+    [SerializeField] private GameObject arrowUI;
     public Player player;
     [SerializeField] private List<Enemy> enemies = new List<Enemy>();
     private StatusUI status;
@@ -268,6 +269,11 @@ public class TurnManager : MonoBehaviour
             switch (currentPlayerState)
             {
                 case PlayerTurnState.ListActions:
+                    int buttonSelect = 0;
+                    bool keyboardSelecting = true;
+                    GameObject arrowSelector = Instantiate(arrowUI);
+                    arrowSelector.transform.SetParent(canvas, false);
+
                     List<GameObject> actionButtons = new List<GameObject>();
                     previousPlayerState = currentPlayerState;
 
@@ -311,18 +317,63 @@ public class TurnManager : MonoBehaviour
                     });
                     actionButtons.Add(itemButton);
 
-                    while (currentPlayerState == PlayerTurnState.ListActions)
+                    while ((currentPlayerState == PlayerTurnState.ListActions) && (keyboardSelecting))
                     {
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = actionButtons.Count - 1;
+                        }
+                        else if (buttonSelect >= actionButtons.Count){
+                            buttonSelect = 0;
+                        }
+
+                        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect--;
+                        }else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect++;
+                        }else if (Keyboard.current.enterKey.wasPressedThisFrame)
+                        {
+                            keyboardSelecting = false;
+                        }
+                        arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect+1)));
                         yield return null;
                     }
 
+                    if (!keyboardSelecting)
+                    {
+                        switch (buttonSelect)
+                        {
+                            case 0:
+                                selectedSpell = player.playerSpells[0];
+                                currentPlayerState = PlayerTurnState.EnemySelect;
+                                break;
+                            case 1:
+                                currentPlayerState = PlayerTurnState.ListSpells;
+                                break;
+                            case 2:
+                                currentPlayerState = PlayerTurnState.ListItems;
+                                break;
+                            default:
+                                //if someone somehow breaks it they get to staff attack (as a treat)
+                                selectedSpell = player.playerSpells[0];
+                                currentPlayerState = PlayerTurnState.EnemySelect;
+                                break;
+                        }
+                    }
                     for (int i = actionButtons.Count - 1; i >= 0; i--)
                     {
                         Destroy(actionButtons[i]);
                     }
+                    Destroy(arrowSelector);
                     break;
 
                 case PlayerTurnState.ListSpells:
+                    buttonSelect = 0;
+                    keyboardSelecting = true;
+                    arrowSelector = Instantiate(arrowUI);
+                    arrowSelector.transform.SetParent(canvas, false);
                     //Spawns a button for each spell in the player's spell array 
                     int mult = 0;
                     needInput = true;
@@ -364,22 +415,51 @@ public class TurnManager : MonoBehaviour
                     }
 
                     //Pauses game until attack is selected
-                    while (needInput)
+                    while ((needInput) && (keyboardSelecting))
                     {
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = buttons.Count - 1;
+                        }
+                        else if (buttonSelect >= buttons.Count)
+                        {
+                            buttonSelect = 0;
+                        }
+
+                        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect--;
+                        }
+                        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect++;
+                        }
+                        else if (Keyboard.current.enterKey.wasPressedThisFrame)
+                        {
+                            keyboardSelecting = false;
+                        }
+                        arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect + 1)));
+
                         if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                         {
                             needInput = false;
                             currentPlayerState = previousPlayerState;
                         }
+                        
                         yield return null;
                     }
 
+                    if (!keyboardSelecting)
+                    {
+                        selectedSpell = SceneManager.spells[buttonSelect];
+                    }
 
                     //Removes buttons
                     for (int i = buttons.Count - 1; i >= 0; i--)
                     {
                         Destroy(buttons[i]);
                     }
+                    Destroy(arrowSelector);
                     if (selectedSpell != null)
                     {
                         previousPlayerState = PlayerTurnState.ListSpells;
@@ -388,14 +468,19 @@ public class TurnManager : MonoBehaviour
                     break;
 
                 case PlayerTurnState.ListItems:
+                    buttonSelect = 0;
+                    keyboardSelecting = true;
+                    arrowSelector = Instantiate(arrowUI);
+                    arrowSelector.transform.SetParent(canvas, false);
                     mult = 0;
                     needInput = true;
                     bool usedItem = false;
+                    List<Item> possibleItems = new List<Item>();
                     previousPlayerState = PlayerTurnState.ListActions;
                     for (int i = 0; i < SceneManager.items.Distinct().Count(); i++)
                     {
                         Item it = SceneManager.items.Distinct().ElementAt(i);
-
+                        possibleItems.Add(it);
                         GameObject newButton = Instantiate(button);
                         RectTransform rt = newButton.GetComponent<RectTransform>();
 
@@ -423,8 +508,31 @@ public class TurnManager : MonoBehaviour
                     }
 
                     //Pauses game until attack is selected
-                    while (needInput)
+                    while ((needInput) && (keyboardSelecting))
                     {
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = buttons.Count - 1;
+                        }
+                        else if (buttonSelect >= buttons.Count)
+                        {
+                            buttonSelect = 0;
+                        }
+
+                        if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect--;
+                        }
+                        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+                        {
+                            buttonSelect++;
+                        }
+                        else if (Keyboard.current.enterKey.wasPressedThisFrame)
+                        {
+                            keyboardSelecting = false;
+                        }
+                        arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect + 1)));
+
                         if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                         {
                             needInput = false;
@@ -433,10 +541,21 @@ public class TurnManager : MonoBehaviour
                         yield return null;
                     }
 
+                    if (!keyboardSelecting)
+                    {
+                        Item used = possibleItems[buttonSelect];
+                        used.useItem(player);
+                        flavortext.text = "Rowan used a " + used.getItemName() + " on herself!";
+                        SceneManager.items.Remove(used);
+                        usedItem = true;
+                    }
+
                     for (int i = buttons.Count - 1; i >= 0; i--)
                     {
                         Destroy(buttons[i]);
                     }
+
+                    Destroy(arrowSelector);
 
                     if (usedItem)
                     {
