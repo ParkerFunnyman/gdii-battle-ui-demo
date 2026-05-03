@@ -59,7 +59,7 @@ public class FieldPlayer : MonoBehaviour
             }
 
             int rand = Random.Range(0, 1000);
-            if (rand > 998)
+            if (rand > 990)
             {
                 steps = 0;
                 SceneManager.BattleTransition(transform.position);
