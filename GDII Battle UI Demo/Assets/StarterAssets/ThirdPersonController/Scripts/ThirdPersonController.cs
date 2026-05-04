@@ -286,8 +286,8 @@ namespace StarterAssets
         {
             if (Grounded)
             {
-                // // reset the fall timeout timer
-                // _fallTimeoutDelta = FallTimeout;
+                // reset the fall timeout timer
+                _fallTimeoutDelta = FallTimeout;
 
                 // // update animator if using character
                 // if (_hasAnimator)
@@ -296,11 +296,11 @@ namespace StarterAssets
                 //     _animator.SetBool(_animIDFreeFall, false);
                 // }
 
-                // // stop our velocity dropping infinitely when grounded
-                // if (_verticalVelocity < 0.0f)
-                // {
-                //     _verticalVelocity = -2f;
-                // }
+                // stop our velocity dropping infinitely when grounded
+                if (_verticalVelocity < 0.0f)
+                {
+                     _verticalVelocity = -2f;
+                }
 
                 // // Jump
                 // if (_input.jump && _jumpTimeoutDelta <= 0.0f)

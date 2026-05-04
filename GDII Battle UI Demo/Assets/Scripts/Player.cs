@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
     {
         if (e == null)
         {
-            fieldWait(0.5f, type);
+            StartCoroutine(fieldWait(0.5f, type));
         }
         else
         {
@@ -262,7 +262,7 @@ public class Player : MonoBehaviour
         Renderer rend = spellBall.GetComponent<Renderer>();
         ParticleSystemRenderer PSrend = spellBall.GetComponent<ParticleSystemRenderer>();
         Transform playerT = GetComponent<Transform>();
-        spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y + 0.67f, playerT.position.z);
+        spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y, playerT.position.z);
         if (type == "fire")
         {
             rend.material = fire;
@@ -295,7 +295,7 @@ public class Player : MonoBehaviour
         Vector3 direction = playerT.position.normalized;
         if (direction != Vector3.zero)
         {
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, -0.13f, direction.z));
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
             spellBall.transform.rotation = lookRotation;
         }
         yield return new WaitForSeconds(1);
