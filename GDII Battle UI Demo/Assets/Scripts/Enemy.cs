@@ -64,6 +64,8 @@ public class Enemy : MonoBehaviour
     private AudioSource enemyAS;
     public float audioDelay = 1.0f;
     [SerializeField] private AudioClip spellAudio;
+    public float arrowOffsetX = 0.0f;
+    public float arrowOffsetZ = 0.0f;
 
     public void setPlayer(Player p)
     {
@@ -152,6 +154,11 @@ public class Enemy : MonoBehaviour
         else if (attackType == "wind")
         {
             actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
+            actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
+        }
+        else if(attackType == "ice")
+        {
+            actions.Add(new EnemyAction("Cold Hammer", 30, "ice"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
         }
     }

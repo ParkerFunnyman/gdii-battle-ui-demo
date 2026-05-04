@@ -570,7 +570,7 @@ public class TurnManager : MonoBehaviour
                     {
                         int selectIndex = 0;
                         GameObject arrowToEnemy = Instantiate(arrow);
-                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(0, 2, 0);
+                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(enemies[selectIndex].arrowOffsetX, 2, enemies[selectIndex].arrowOffsetZ);
                         bool selecting = true;
                         bool wentBack = false;  // track if backspace was pressed
                         arrowToEnemy.transform.position = enemies[0].getPosition() + offset;
@@ -581,14 +581,12 @@ public class TurnManager : MonoBehaviour
                                 selectIndex--;
                                 if (selectIndex < 0) selectIndex = enemies.Count - 1;
                                 else if (selectIndex >= enemies.Count) selectIndex = 0;
-                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
                             else if (Keyboard.current.dKey.wasPressedThisFrame || Keyboard.current.rightArrowKey.wasPressedThisFrame)
                             {
                                 selectIndex++;
                                 if (selectIndex < 0) selectIndex = enemies.Count - 1;
                                 else if (selectIndex >= enemies.Count) selectIndex = 0;
-                                arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             }
                             else if (Keyboard.current.enterKey.wasPressedThisFrame || Keyboard.current.zKey.wasPressedThisFrame)
                             {
@@ -601,6 +599,8 @@ public class TurnManager : MonoBehaviour
                                 wentBack = true;  // flag it
                                 selecting = false;
                             }
+                            offset = new UnityEngine.Vector3(enemies[selectIndex].arrowOffsetX, 2, enemies[selectIndex].arrowOffsetZ);
+                            arrowToEnemy.transform.position = enemies[selectIndex].getPosition() + offset;
                             yield return null;
                         }
                         Destroy(arrowToEnemy);
