@@ -235,6 +235,9 @@ public class TurnManager : MonoBehaviour
                     textbox.SetActive(false);
                     battleOver = true;
                     //gain xp
+                    // retain current stats
+                    SceneManager.playerHealth = player.getCurrentHP();
+                    SceneManager.playerMana = player.getCurrentMana();
                     SceneManager.FieldTransition();
                     //go back to dungeon scrawling
                     break;

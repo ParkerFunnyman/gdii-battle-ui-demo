@@ -47,7 +47,14 @@ public class Player : MonoBehaviour
 
     public void fireSpell(Enemy e, string type)
     {
-        StartCoroutine(wait(0.5f, type, e));
+        if (e == null)
+        {
+            fieldWait(0.5f, type);
+        }
+        else
+        {
+           StartCoroutine(wait(0.5f, type, e)); 
+        }
 
     }
     public void playAudios(string input)
@@ -73,6 +80,11 @@ public class Player : MonoBehaviour
         return currentHP;
     }
 
+    public void setCurrentHP(int health)
+    {
+        currentHP = health;
+    }
+
     public int getMaxHP()
     {
         return maxHP;
@@ -81,6 +93,11 @@ public class Player : MonoBehaviour
     public int getCurrentMana()
     {
         return currentMana;
+    }
+
+    public void setCurrentMana(int mana)
+    {
+        currentMana = mana;
     }
 
     public int getMaxMana()
@@ -226,6 +243,53 @@ public class Player : MonoBehaviour
             rend.material.color = Color.black;
         }
         Vector3 direction = (enemyT.position - playerT.position).normalized;
+        if (direction != Vector3.zero)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, -0.13f, direction.z));
+            spellBall.transform.rotation = lookRotation;
+        }
+        yield return new WaitForSeconds(1);
+        Destroy(spellBall );
+    }
+
+    IEnumerator fieldWait(float time, string type)
+    {
+        yield return new WaitForSeconds(time);
+        GameObject spellBall = Instantiate(magicProjectile);
+        Renderer rend = spellBall.GetComponent<Renderer>();
+        ParticleSystemRenderer PSrend = spellBall.GetComponent<ParticleSystemRenderer>();
+        Transform playerT = GetComponent<Transform>();
+        spellBall.transform.position = new Vector3(playerT.position.x, playerT.position.y + 0.67f, playerT.position.z);
+        if (type == "fire")
+        {
+            rend.material = fire;
+            PSrend.material = fireParticle;
+        }
+        else if (type == "ice")
+        {
+            rend.material = ice;
+            PSrend.material = iceParticle;
+        }
+        else if (type == "wind")
+        {
+            rend.material.color = Color.seaGreen;
+            PSrend.material = windParticle;
+        }
+        else if (type == "thunder")
+        {
+            rend.material.color = Color.yellow;
+            PSrend.material = thunderParticle;
+        }
+        else if (type == "earth")
+        {
+            rend.material = earth;
+            PSrend.material = earthParticle;
+        }
+        else
+        {
+            rend.material.color = Color.black;
+        }
+        Vector3 direction = playerT.position.normalized;
         if (direction != Vector3.zero)
         {
             Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, -0.13f, direction.z));

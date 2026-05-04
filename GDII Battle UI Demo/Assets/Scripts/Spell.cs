@@ -79,4 +79,23 @@ public class Spell
             }
         }
     }
+
+    public void fieldSpell(Player p)
+    {
+        Transform playerT = p.GetComponent<Transform>();
+        Vector3 direction = playerT.position.normalized;
+
+        p.playAudios(0.2f);
+        if (SpellType == "light")
+        {
+            p.playAnim("Healing");
+            p.restoreHealth(BasePower);
+        }
+        else
+        {
+            p.playAnim("Casting");
+            p.fireSpell(null, SpellType);
+        }
+
+    }
 }

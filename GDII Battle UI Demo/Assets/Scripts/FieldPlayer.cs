@@ -24,6 +24,8 @@ public class FieldPlayer : MonoBehaviour
         if (SceneManager.restorePos)
         {
             transform.position = SceneManager.playerPos;
+            player.setCurrentMana(SceneManager.playerMana);
+            player.setCurrentHP(SceneManager.playerHealth);
         }
     }
 

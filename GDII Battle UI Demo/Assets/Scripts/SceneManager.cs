@@ -20,6 +20,9 @@ public class SceneManager : MonoBehaviour
     public static Vector3 playerPos;
     public static bool restorePos = false;
 
+    public static int playerHealth = 150;
+    public static int playerMana = 50;
+
 
     void Start()
     {

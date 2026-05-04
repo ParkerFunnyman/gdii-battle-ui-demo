@@ -36,12 +36,15 @@ public class UI_Navigation : MonoBehaviour
     private int gap = 125;
     [SerializeField] private GameObject button;
     [SerializeField] private Transform canvas;
+    private StatusUI status;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        status = canvas.GetComponentInChildren<StatusUI>();
+        status.SetMaxHealth(player.getMaxHP(), player.getMaxMana());
         current_menu_state = menu_state.main;
-        StartCoroutine(spellcast());
+        StartCoroutine(menu());
     }
 
     // Update is called once per frame
@@ -50,7 +53,7 @@ public class UI_Navigation : MonoBehaviour
         
     }
 
-        IEnumerator spellcast()
+    IEnumerator menu()
     {
         while (true)
         {
@@ -142,6 +145,7 @@ public class UI_Navigation : MonoBehaviour
                     arrowSelector = Instantiate(arrowUI);
                     arrowSelector.transform.SetParent(canvas, false);
 
+
                     //Spawns a button for each spell in the player's spell array 
                     int mult = 0;
                     needInput = true;
@@ -201,6 +205,7 @@ public class UI_Navigation : MonoBehaviour
 
                         if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                         {
+                            current_menu_state = menu_state.main;
                             needInput = false;
                         }
                         
@@ -220,6 +225,7 @@ public class UI_Navigation : MonoBehaviour
                     Destroy(arrowSelector);
                     if (selectedSpell != null)
                     {
+                        selectedSpell.fieldSpell(player);
                         previous_menu_state = menu_state.spell_list;
                         current_menu_state = menu_state.main;
                     }
@@ -301,6 +307,7 @@ public class UI_Navigation : MonoBehaviour
                         Item used = possibleItems[buttonSelect];
                         used.useItem(player);
                         SceneManager.items.Remove(used);
+                        usedItem = true;
                     }
 
                     for (int i = buttons.Count - 1; i >= 0; i--)
