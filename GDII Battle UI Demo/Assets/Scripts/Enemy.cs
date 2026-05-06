@@ -149,7 +149,7 @@ public class Enemy : MonoBehaviour
         if (attackType == "fire")
         {
             actions.Add(new EnemyAction("Heat Burst", 40, "fire"));
-            actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
+            actions.Add(new EnemyAction("Medium Restoration", 25, "light"));
         }
         else if (attackType == "wind")
         {
@@ -158,8 +158,13 @@ public class Enemy : MonoBehaviour
         }
         else if (attackType == "ice")
         {
-            actions.Add(new EnemyAction("Cold Hammer", 30, "ice"));
+            actions.Add(new EnemyAction("Chilling Crush", 30, "ice"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
+        }
+        else if (attackType == "null")
+        {
+            actions.Add(new EnemyAction("The Almighty", 45, "null"));
+            actions.Add(new EnemyAction("Major Restoration", 35, "light"));
         }
     }
 

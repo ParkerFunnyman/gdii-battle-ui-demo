@@ -107,6 +107,10 @@ public class TurnManager : MonoBehaviour
                     else if (enemies.Count == 1)
                     {
                         introText = "A wild " + enemies[0].getName() + " has appeared!";
+                        if (enemies[0].getName() == "The Forgotten One")
+                        {
+                            introText = "It's him.";
+                        }
                     }
                     else
                     {
