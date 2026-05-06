@@ -111,6 +111,10 @@ public class TurnManager : MonoBehaviour
                         {
                             introText = "It's him.";
                         }
+                        else if (enemies[0].name == "Lyric")
+                        {
+                            introText = "oh god oh fuck";
+                        }
                     }
                     else
                     {
