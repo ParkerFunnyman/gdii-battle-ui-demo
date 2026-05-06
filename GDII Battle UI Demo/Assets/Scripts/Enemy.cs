@@ -156,7 +156,7 @@ public class Enemy : MonoBehaviour
             actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
         }
-        else if(attackType == "ice")
+        else if (attackType == "ice")
         {
             actions.Add(new EnemyAction("Cold Hammer", 30, "ice"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
