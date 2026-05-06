@@ -37,6 +37,10 @@ public class EnemyAction
         if (Type == "light")
         {
             e.restoreHealth(BasePower);
+        } else if (Type == "dark"){
+            e.MagicAttack(0);
+            e.restoreHealth(BasePower / 4);
+            e.getPlayer().restoreMana(-BasePower);
         }
         else if (Type == e.getType())
         {
@@ -70,6 +74,11 @@ public class Enemy : MonoBehaviour
     public void setPlayer(Player p)
     {
         player = p;
+    }
+
+    public Player getPlayer()
+    {
+        return player;
     }
     public Vector3 getPosition()
     {
@@ -164,6 +173,7 @@ public class Enemy : MonoBehaviour
         else if (attackType == "null")
         {
             actions.Add(new EnemyAction("The Almighty", 45, "null"));
+            actions.Add(new EnemyAction("Mana Drain", 10, "dark"));
             actions.Add(new EnemyAction("Major Restoration", 35, "light"));
         }
     }

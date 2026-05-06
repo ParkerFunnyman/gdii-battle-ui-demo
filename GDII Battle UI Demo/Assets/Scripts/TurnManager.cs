@@ -466,6 +466,14 @@ public class TurnManager : MonoBehaviour
                             currentPlayerState = previousPlayerState;
                         }
 
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = buttons.Count - 1;
+                        }
+                        else if (buttonSelect >= buttons.Count)
+                        {
+                            buttonSelect = 0;
+                        }
                         yield return null;
                     }
 
@@ -553,7 +561,7 @@ public class TurnManager : MonoBehaviour
                         {
                             buttonSelect = 0;
                         }
-                        
+
                         if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                         {
                             needInput = false;
