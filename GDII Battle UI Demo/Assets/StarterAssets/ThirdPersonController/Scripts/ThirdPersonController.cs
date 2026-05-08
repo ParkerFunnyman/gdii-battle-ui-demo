@@ -334,10 +334,10 @@ namespace StarterAssets
                 else
                 {
                     // update animator if using character
-                    if (_hasAnimator)
+                    /*if (_hasAnimator)
                     {
                         _animator.SetBool(_animIDFreeFall, true);
-                    }
+                    }*/
                 }
 
                 // if we are not grounded, do not jump

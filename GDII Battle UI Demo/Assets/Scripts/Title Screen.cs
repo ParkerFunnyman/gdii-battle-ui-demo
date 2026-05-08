@@ -5,7 +5,7 @@ public class TitleScreen : MonoBehaviour
 {
     public void loadGame()
     {
-        UnityScene.SceneManager.LoadScene(1);
+        UnityScene.SceneManager.LoadScene("MainScene");
     }
 
     public void loadCredits()

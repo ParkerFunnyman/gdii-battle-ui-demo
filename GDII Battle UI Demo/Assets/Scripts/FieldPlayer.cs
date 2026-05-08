@@ -14,6 +14,7 @@ public class FieldPlayer : MonoBehaviour
     public static CharacterController controller;
     public static Vector3 horizontalVelocity;
     private static int steps;
+    public bool encounter = false; // skip those pesky random encounters (debug)
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,13 +39,12 @@ public class FieldPlayer : MonoBehaviour
         {
             if (steps != 1500)
             {
-                Debug.Log(steps);
                 steps++;
                 return;
             }
 
             int rand = Random.Range(0, 1000);
-            if (rand > 990)
+            if (rand > 990 && encounter)
             {
                 steps = 0;
                 SceneManager.BattleTransition(transform.position);
