@@ -37,6 +37,10 @@ public class EnemyAction
         if (Type == "light")
         {
             e.restoreHealth(BasePower);
+        } else if (Type == "dark"){
+            e.MagicAttack(0);
+            e.restoreHealth(BasePower / 4);
+            e.getPlayer().restoreMana(-BasePower);
         }
         else if (Type == e.getType())
         {
@@ -70,6 +74,11 @@ public class Enemy : MonoBehaviour
     public void setPlayer(Player p)
     {
         player = p;
+    }
+
+    public Player getPlayer()
+    {
+        return player;
     }
     public Vector3 getPosition()
     {
@@ -149,17 +158,23 @@ public class Enemy : MonoBehaviour
         if (attackType == "fire")
         {
             actions.Add(new EnemyAction("Heat Burst", 40, "fire"));
-            actions.Add(new EnemyAction("Lesser Restoration", 30, "light"));
+            actions.Add(new EnemyAction("Medium Restoration", 25, "light"));
         }
         else if (attackType == "wind")
         {
             actions.Add(new EnemyAction("Foul Wind", 30, "wind"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
         }
-        else if(attackType == "ice")
+        else if (attackType == "ice")
         {
-            actions.Add(new EnemyAction("Cold Hammer", 30, "ice"));
+            actions.Add(new EnemyAction("Chilling Crush", 30, "ice"));
             actions.Add(new EnemyAction("Lesser Restoration", 15, "light"));
+        }
+        else if (attackType == "null")
+        {
+            actions.Add(new EnemyAction("The Almighty", 45, "null"));
+            actions.Add(new EnemyAction("Mana Drain", 10, "dark"));
+            actions.Add(new EnemyAction("Major Restoration", 35, "light"));
         }
     }
 

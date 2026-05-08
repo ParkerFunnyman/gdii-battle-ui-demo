@@ -5,12 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Battle Scene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
     path: Assets/Scenes/Dialogue Test.unity
     guid: 182e62f1ed30e3b469a3b65265860336
+  - enabled: 1
+    path: Assets/Scenes/Title Screen.unity
+    guid: f6ce6b62ae187e044b11d84f1d8d00a5
+  - enabled: 1
+    path: Assets/Scenes/Battle Scene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 644a7b06cb058a7428014f404ff5c549
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 776ce63d28f8a6247a5fff0b0a1559ed, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

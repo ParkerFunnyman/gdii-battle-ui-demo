@@ -52,7 +52,6 @@ public class TurnManager : MonoBehaviour
     private Enemy eSelected;
     private List<GameObject> buttons = new List<GameObject>();
     private int gap = 125;
-
     public void addEnemy(Enemy e)
     {
         enemies.Add(e);
@@ -80,6 +79,16 @@ public class TurnManager : MonoBehaviour
         status.SetMana(player.getCurrentMana());
     }
 
+    void OnUp()
+    {
+        return;
+    }
+
+    void OnDown()
+    {
+        return;
+    }
+
     IEnumerator Battle()
     {
         while (!battleOver)
@@ -98,6 +107,14 @@ public class TurnManager : MonoBehaviour
                     else if (enemies.Count == 1)
                     {
                         introText = "A wild " + enemies[0].getName() + " has appeared!";
+                        if (enemies[0].getName() == "The Forgotten One")
+                        {
+                            introText = "It's him.";
+                        }
+                        else if (enemies[0].name == "Lyric")
+                        {
+                            introText = "oh god oh fuck";
+                        }
                     }
                     else
                     {
@@ -264,7 +281,7 @@ public class TurnManager : MonoBehaviour
         }
         yield return null;
     }
-    
+
     IEnumerator PlayerTurns()
     {
         while (!playerTurnOver)
@@ -326,21 +343,24 @@ public class TurnManager : MonoBehaviour
                         {
                             buttonSelect = actionButtons.Count - 1;
                         }
-                        else if (buttonSelect >= actionButtons.Count){
+                        else if (buttonSelect >= actionButtons.Count)
+                        {
                             buttonSelect = 0;
                         }
 
                         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
                         {
                             buttonSelect--;
-                        }else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+                        }
+                        else if (Keyboard.current.downArrowKey.wasPressedThisFrame)
                         {
                             buttonSelect++;
-                        }else if (Keyboard.current.enterKey.wasPressedThisFrame)
+                        }
+                        else if (Keyboard.current.enterKey.wasPressedThisFrame)
                         {
                             keyboardSelecting = false;
                         }
-                        arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect+1)));
+                        arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect + 1)));
                         yield return null;
                     }
 
@@ -448,7 +468,15 @@ public class TurnManager : MonoBehaviour
                             needInput = false;
                             currentPlayerState = previousPlayerState;
                         }
-                        
+
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = buttons.Count - 1;
+                        }
+                        else if (buttonSelect >= buttons.Count)
+                        {
+                            buttonSelect = 0;
+                        }
                         yield return null;
                     }
 
@@ -513,14 +541,6 @@ public class TurnManager : MonoBehaviour
                     //Pauses game until attack is selected
                     while ((needInput) && (keyboardSelecting))
                     {
-                        if (buttonSelect < 0)
-                        {
-                            buttonSelect = buttons.Count - 1;
-                        }
-                        else if (buttonSelect >= buttons.Count)
-                        {
-                            buttonSelect = 0;
-                        }
 
                         if (Keyboard.current.upArrowKey.wasPressedThisFrame)
                         {
@@ -535,6 +555,15 @@ public class TurnManager : MonoBehaviour
                             keyboardSelecting = false;
                         }
                         arrowSelector.transform.position = new UnityEngine.Vector2(1375.0f, 1100 - (gap * (buttonSelect + 1)));
+
+                        if (buttonSelect < 0)
+                        {
+                            buttonSelect = buttons.Count - 1;
+                        }
+                        else if (buttonSelect >= buttons.Count)
+                        {
+                            buttonSelect = 0;
+                        }
 
                         if (Keyboard.current.backspaceKey.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
                         {
