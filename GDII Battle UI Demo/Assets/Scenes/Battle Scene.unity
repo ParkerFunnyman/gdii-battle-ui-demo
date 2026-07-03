@@ -2523,8 +2523,8 @@ MonoBehaviour:
   anim: {fileID: 1698925854}
   audioDelay: 1.5
   spellAudio: {fileID: 8300000, guid: a498c9792969c7d4f92b85e4bdb79912, type: 3}
-  arrowOffsetX: 0
-  arrowOffsetZ: 0
+  arrowOffsetX: -0.27
+  arrowOffsetZ: -0.6
 --- !u!1001 &1749310812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3365,6 +3365,14 @@ PrefabInstance:
     - target: {fileID: 1032333179667703247, guid: 3a5dca97319ad824d9f4ed976b330ef5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568093273556518259, guid: 3a5dca97319ad824d9f4ed976b330ef5, type: 3}
+      propertyPath: arrowOffsetX
+      value: 0.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568093273556518259, guid: 3a5dca97319ad824d9f4ed976b330ef5, type: 3}
+      propertyPath: arrowOffsetZ
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

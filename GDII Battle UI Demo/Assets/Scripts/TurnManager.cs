@@ -437,6 +437,10 @@ public class TurnManager : MonoBehaviour
                     //Pauses game until attack is selected
                     while ((needInput) && (keyboardSelecting))
                     {
+                        textbox.SetActive(true);
+                        flavortext.text = "Spell Name: " + SceneManager.spells[buttonSelect].getSpellName()
+                            + "\nMana Cost: " + SceneManager.spells[buttonSelect].getManaCost()
+                            + "\n" + SceneManager.spells[buttonSelect].getDescription();
                         if (buttonSelect < 0)
                         {
                             buttonSelect = buttons.Count - 1;
@@ -487,6 +491,8 @@ public class TurnManager : MonoBehaviour
                     {
                         Destroy(buttons[i]);
                     }
+                    textbox.SetActive(false);
+
                     Destroy(arrowSelector);
                     if (selectedSpell != null)
                     {
@@ -596,7 +602,7 @@ public class TurnManager : MonoBehaviour
                     {
                         int selectIndex = 0;
                         GameObject arrowToEnemy = Instantiate(arrow);
-                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(enemies[selectIndex].arrowOffsetX, 2, enemies[selectIndex].arrowOffsetZ);
+                        UnityEngine.Vector3 offset = new UnityEngine.Vector3(enemies[selectIndex].arrowOffsetX, 2.5f, enemies[selectIndex].arrowOffsetZ);
                         bool selecting = true;
                         bool wentBack = false;  // track if backspace was pressed
                         arrowToEnemy.transform.position = enemies[0].getPosition() + offset;

@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Spell
     private int BasePower;
     private string SpellType;
     private int ManaCost;
+    private string Description;
 
     public Spell(string spellName, int basePower, string spellType, int manaCost)
     {
@@ -14,6 +16,16 @@ public class Spell
         BasePower = basePower;
         SpellType = spellType.ToLower();
         ManaCost = manaCost;
+        Description = "";
+    }
+
+    public Spell(string spellName, int basePower, string spellType, int manaCost, string desc)
+    {
+        SpellName = spellName;
+        BasePower = basePower;
+        SpellType = spellType.ToLower();
+        ManaCost = manaCost;
+        Description = desc;
     }
 
     public string getSpellName()
@@ -29,6 +41,17 @@ public class Spell
     public string getSpellType()
     {
         return SpellType;
+    }
+
+    public string getDescription()
+    {
+        if (Description == ""){
+            return "Deals " + SpellType + " damage."; 
+        }
+        else
+        {
+            return Description;
+        }
     }
 
     public void castSpell(Player p, Enemy e)

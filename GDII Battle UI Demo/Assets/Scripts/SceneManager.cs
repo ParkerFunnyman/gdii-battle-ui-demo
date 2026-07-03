@@ -10,7 +10,7 @@ public class SceneManager : MonoBehaviour
         new Spell("Mach Wave", 60, "wind", 10),
         new Spell("Induction", 60, "thunder", 10), 
         new Spell("Brickwork", 60, "earth", 10),
-        new Spell("Lesser Restoration", 35, "light", 5)//, 
+        new Spell("Lesser Restoration", 35, "light", 5, "Restores some health.")//, 
         //new Spell("Mana Drain", 10, "dark", -5)
     };
     public static List<Item> items = new List<Item>();
