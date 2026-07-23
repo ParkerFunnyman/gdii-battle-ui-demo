@@ -1,5 +1,7 @@
-# Project Vessel (TITLE PENDING)
+# Vessel
 This is the main repo for Project Vessel, a WIP as the final project for Intro to Game Design II (WLLC 30403) by Buncha Goons.
+
+[Play it here! (Active Development)](https://idioticquest.itch.io/vessel)
 
 [Watch our trailer here!](https://youtu.be/O_VKRhK4aV0?si=nyyHqTCY1EznqkPu)
 
